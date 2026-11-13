@@ -1,0 +1,3013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller Práctico: Levantamiento de Requerimientos Funcionales | SENA</title>
+  <style>
+    :root {
+      --sena-green: #39a900;
+      --sena-green-dark: #2c8200;
+      --sena-green-soft: #eaf7e3;
+      --brand-navy: #00324d;
+      --brand-navy-light: #0a4a6e;
+      --brand-teal: #0d7377;
+      --bg-page: #f3f6f9;
+      --bg-surface: rgba(255, 255, 255, 0.94);
+      --bg-surface-solid: #ffffff;
+      --bg-subtle: #f8fafc;
+      --text-primary: #162231;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border-color: #d8e1ea;
+      --border-focus: #00324d;
+      --shadow-sm: 0 2px 8px rgba(0, 50, 77, 0.05);
+      --shadow-md: 0 8px 24px rgba(0, 50, 77, 0.08);
+      --shadow-lg: 0 16px 36px rgba(0, 50, 77, 0.12);
+
+      /* Semánticos */
+      --danger-bg: #fef2f2;
+      --danger-border: #f87171;
+      --danger-text: #b91c1c;
+      --warning-bg: #fffbeb;
+      --warning-border: #fbbf24;
+      --warning-text: #92400e;
+      --success-bg: #ecfdf5;
+      --success-border: #34d399;
+      --success-text: #065f46;
+      --info-bg: #eff6ff;
+      --info-border: #93c5fd;
+      --info-text: #1e40af;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: 0.2s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(57, 169, 0, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 100% 10%, rgba(0, 50, 77, 0.07) 0%, transparent 45%),
+        var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    /* Barra superior de navegación */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .topbar-title-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar-inst {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--sena-green-dark);
+      text-transform: uppercase;
+    }
+
+    .topbar-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--brand-navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      background: var(--sena-green-soft);
+      color: var(--brand-navy);
+      outline: none;
+    }
+
+    .topbar-status {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .mini-progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--brand-navy);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.38rem 0.8rem;
+      border-radius: 999px;
+    }
+
+    .mini-progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sena-green);
+    }
+
+    .save-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--success-text);
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* Tarjetas institucionales */
+    .card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 1.75rem;
+      min-width: 0;
+    }
+
+    /* SECCIÓN 1: Encabezado Hero */
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f6faf8 65%, #eaf6e8 100%);
+      border-top: 5px solid var(--sena-green);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sena-logo-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .sena-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sena-acronym {
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--sena-green-dark);
+      line-height: 1;
+    }
+
+    .sena-full-name {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--brand-navy);
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    .moment-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--brand-navy);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+    }
+
+    .hero-title {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+      font-weight: 800;
+      color: var(--brand-navy);
+      line-height: 1.22;
+    }
+
+    .hero-subtitle {
+      margin: 0 0 1.25rem;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      max-width: 860px;
+    }
+
+    .rules-banner {
+      background: var(--bg-surface-solid);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--brand-teal);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+    }
+
+    .rules-banner-title {
+      margin: 0 0 0.5rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--brand-navy);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .rules-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.35rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    /* Encabezados de sección */
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.35rem;
+    }
+
+    .section-step {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sena-green-dark);
+      background: var(--sena-green-soft);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--brand-navy);
+    }
+
+    .section-desc {
+      margin: 0.35rem 0 0;
+      font-size: 0.93rem;
+      color: var(--text-secondary);
+    }
+
+    /* Formularios e inputs */
+    .form-grid-student {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+      min-width: 0;
+    }
+
+    .field-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--brand-navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .required-mark {
+      color: var(--danger-text);
+      font-weight: 800;
+    }
+
+    .field-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      font-family: inherit;
+      font-size: 0.93rem;
+      color: var(--text-primary);
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .field-control:hover:not(:disabled) {
+      border-color: #9fb1c4;
+    }
+
+    .field-control:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 50, 77, 0.14);
+    }
+
+    .field-control:disabled {
+      background-color: #f1f5f9;
+      color: #334155;
+      border-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    textarea.field-control {
+      resize: vertical;
+      min-height: 92px;
+      line-height: 1.5;
+    }
+
+    .field-help {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .sync-actions-row {
+      margin-top: 1rem;
+      padding-top: 0.9rem;
+      border-top: 1px dashed var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .sync-note {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 0.65rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: transform 0.12s ease, background var(--transition), border-color var(--transition), box-shadow var(--transition), opacity var(--transition);
+      text-decoration: none;
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.35);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background: var(--sena-green);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(57, 169, 0, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--sena-green-dark);
+    }
+
+    .btn-navy {
+      background: var(--brand-navy);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(0, 50, 77, 0.2);
+    }
+
+    .btn-navy:hover:not(:disabled) {
+      background: var(--brand-navy-light);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--brand-navy);
+      border-color: var(--border-color);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background: var(--bg-subtle);
+      border-color: var(--brand-navy);
+    }
+
+    .btn-edit {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #f59e0b;
+    }
+
+    .btn-edit:hover:not(:disabled) {
+      background: #fef3c7;
+      border-color: #d97706;
+    }
+
+    .btn-danger-outline {
+      background: #ffffff;
+      color: var(--danger-text);
+      border-color: #fecaca;
+    }
+
+    .btn-danger-outline:hover:not(:disabled) {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+    }
+
+    .btn-sm {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+    }
+
+    /* SECCIÓN 3 y 4: Selector y Contexto Empresarial */
+    .case-selector-bar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: end;
+      background: var(--bg-subtle);
+      padding: 1.15rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .case-showcase {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .case-banner {
+      background: linear-gradient(120deg, var(--brand-navy) 0%, #0b4c6f 100%);
+      color: #ffffff;
+      padding: 1.4rem 1.5rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .case-banner-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .case-code-tag {
+      background: var(--sena-green);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .case-sector-tag {
+      background: rgba(255, 255, 255, 0.16);
+      color: #e2e8f0;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
+    }
+
+    .case-company-name {
+      margin: 0.2rem 0 0;
+      font-size: clamp(1.2rem, 2.1vw, 1.55rem);
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .case-description-box {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.2rem 1.35rem;
+    }
+
+    .case-block-title {
+      margin: 0 0 0.65rem;
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--brand-navy);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .case-description-text {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      line-height: 1.65;
+    }
+
+    .case-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.15rem;
+    }
+
+    .case-subcard {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.2rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .case-subcard.problems {
+      border-top: 4px solid #dc2626;
+      background: #fffdfd;
+    }
+
+    .case-subcard.processes {
+      border-top: 4px solid var(--brand-teal);
+    }
+
+    .case-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.91rem;
+      color: var(--text-secondary);
+    }
+
+    .case-needs-box {
+      background: var(--sena-green-soft);
+      border: 1px solid #bce3a8;
+      border-left: 5px solid var(--sena-green);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.35rem;
+    }
+
+    .case-needs-text {
+      margin: 0;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #1c3d0e;
+    }
+
+    /* SECCIÓN 5: Análisis orientador */
+    .guiding-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .guiding-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .guiding-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand-navy);
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .guiding-q {
+      margin: 0;
+      font-size: 0.91rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pedagogical-guide-box {
+      margin-top: 1.25rem;
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.3rem;
+    }
+
+    .pedagogical-guide-title {
+      margin: 0 0 0.6rem;
+      font-size: 0.93rem;
+      font-weight: 800;
+      color: var(--info-text);
+    }
+
+    .pedagogical-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.85rem;
+      font-size: 0.85rem;
+      color: #1e3a8a;
+    }
+
+    .guide-snippet {
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.9rem;
+      border: 1px solid #bfdbfe;
+    }
+
+    .guide-snippet code {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e3a8a;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    /* SECCIÓN 6: Tarjetas de los 5 Requerimientos */
+    .requirements-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .req-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .req-card:focus-within {
+      border-color: var(--brand-navy);
+      box-shadow: var(--shadow-md);
+    }
+
+    .req-card.card-saved {
+      border-color: #22c55e;
+      box-shadow: 0 4px 16px rgba(34, 197, 94, 0.12);
+    }
+
+    .req-card-header {
+      background: var(--bg-subtle);
+      padding: 0.95rem 1.4rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .req-card.card-saved .req-card-header {
+      background: #f0fdf4;
+      border-bottom-color: #bbf7d0;
+    }
+
+    .req-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .req-badge-number {
+      background: var(--brand-navy);
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 0.32rem 0.8rem;
+      border-radius: 6px;
+    }
+
+    .req-card.card-saved .req-badge-number {
+      background: var(--sena-green-dark);
+    }
+
+    .req-module-preview {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .req-status-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .status-chip {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-chip.editing {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border: 1px solid var(--warning-border);
+    }
+
+    .status-chip.saved {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid #34d399;
+    }
+
+    .priority-chip {
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 0.24rem 0.65rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .priority-chip.alta {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .priority-chip.media {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .priority-chip.baja {
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #7dd3fc;
+    }
+
+    .req-card-body {
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .req-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .req-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    /* Barra de acciones por requerimiento (Guardar / Editar) */
+    .req-card-footer {
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-color);
+      padding: 0.9rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .req-card.card-saved .req-card-footer {
+      background: #f7fee7;
+      border-top-color: #d9f99d;
+    }
+
+    .req-footer-hint {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .req-footer-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    /* SECCIÓN 7: Panel de Avance */
+    .progress-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .metric-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.15rem;
+    }
+
+    .metric-label {
+      font-size: 0.79rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--brand-navy);
+    }
+
+    .metric-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+
+    .progress-bar-wrapper {
+      margin-bottom: 1.35rem;
+    }
+
+    .progress-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--brand-navy);
+      margin-bottom: 0.45rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--brand-teal) 0%, var(--sena-green) 100%);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .status-summary-box {
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.35rem;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+    }
+
+    .status-summary-box.state-pending {
+      background: var(--warning-bg);
+      border-color: var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .status-summary-box.state-ready {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .status-summary-title {
+      margin: 0 0 0.4rem;
+      font-size: 0.98rem;
+      font-weight: 800;
+    }
+
+    .status-summary-text {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    /* SECCIÓN 8: Entrega y acciones */
+    .delivery-storage-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 1.2rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .storage-text-primary {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--success-text);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .storage-text-secondary {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+
+    .delivery-buttons-grid {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    /* Toast de notificación */
+    .toast-container {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 390px;
+    }
+
+    .toast {
+      background: var(--brand-navy);
+      color: #ffffff;
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-left: 4px solid var(--sena-green);
+      animation: slideIn 0.22s ease;
+    }
+
+    .toast.toast-error {
+      background: #7f1d1d;
+      border-left-color: #f87171;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Modal personalizado de confirmación */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 460px;
+      width: 100%;
+      padding: 1.65rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      margin: 0 0 0.6rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--brand-navy);
+    }
+
+    .modal-body {
+      margin: 0 0 1.4rem;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Contenedor exclusivo para informe imprimible / PDF */
+    #print-report {
+      display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .req-row-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .card {
+        padding: 1.2rem;
+      }
+
+      .case-selector-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .req-row-3,
+      .req-row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-nav {
+        display: none;
+      }
+
+      .req-footer-buttons,
+      .delivery-buttons-grid {
+        width: 100%;
+      }
+
+      .req-footer-buttons .btn,
+      .delivery-buttons-grid .btn {
+        width: 100%;
+      }
+    }
+
+    /* Estilos de Impresión / PDF Limpio */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+        line-height: 1.4;
+      }
+
+      .topbar,
+      .container,
+      .modal-backdrop,
+      .toast-container {
+        display: none !important;
+      }
+
+      #print-report {
+        display: block !important;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .print-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2.5px solid #00324d;
+        padding-bottom: 10pt;
+        margin-bottom: 14pt;
+      }
+
+      .print-logo-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10pt;
+      }
+
+      .print-title-block h1 {
+        margin: 0;
+        font-size: 13.5pt;
+        color: #00324d;
+        text-transform: uppercase;
+      }
+
+      .print-title-block p {
+        margin: 3pt 0 0;
+        font-size: 9.5pt;
+        color: #334155;
+      }
+
+      .print-meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 14pt;
+        font-size: 9.5pt;
+      }
+
+      .print-meta-table th,
+      .print-meta-table td {
+        border: 1px solid #cbd5e1;
+        padding: 6pt 8pt;
+        text-align: left;
+      }
+
+      .print-meta-table th {
+        background: #f1f5f9;
+        color: #00324d;
+        width: 22%;
+        font-weight: 700;
+      }
+
+      .print-case-box {
+        border: 1px solid #cbd5e1;
+        border-left: 4pt solid #39a900;
+        background: #f8fafc;
+        padding: 9pt 11pt;
+        margin-bottom: 14pt;
+        page-break-inside: avoid;
+      }
+
+      .print-case-box h2 {
+        margin: 0 0 5pt;
+        font-size: 11pt;
+        color: #00324d;
+      }
+
+      .print-case-box p {
+        margin: 0 0 5pt;
+        font-size: 9.3pt;
+      }
+
+      .print-section-heading {
+        font-size: 11pt;
+        font-weight: 800;
+        color: #00324d;
+        margin: 12pt 0 6pt;
+        text-transform: uppercase;
+      }
+
+      .print-matrix-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 8.8pt;
+      }
+
+      .print-matrix-table th,
+      .print-matrix-table td {
+        border: 1px solid #94a3b8;
+        padding: 6pt 7pt;
+        vertical-align: top;
+        text-align: left;
+        word-break: break-word;
+      }
+
+      .print-matrix-table th {
+        background: #00324d;
+        color: #ffffff;
+        font-weight: 700;
+      }
+
+      .print-matrix-table tr {
+        page-break-inside: avoid;
+      }
+
+      .print-footer {
+        margin-top: 22pt;
+        padding-top: 10pt;
+        border-top: 1px solid #cbd5e1;
+        display: flex;
+        justify-content: space-between;
+        font-size: 9pt;
+        color: #475569;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra superior de navegación -->
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <img width="100" height="100" viewBox="0 0 100 100" fill="none" src="https://senacertificados.co/wp-content/uploads/2020/04/images.png" aria-hidden="true">
+          <circle cx="32" cy="11" r="6.5" fill="#39A900"/>
+          <path d="M12 22.5C18.5 26 25.2 27.5 32 27.5C38.8 27.5 45.5 26 52 22.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M32 27.5V41.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M32 41.5L19.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M32 41.5L44.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
+        <div class="topbar-title-group">
+          <span class="topbar-inst">SENA · Servicio Nacional de Aprendizaje</span>
+          <span class="topbar-name">Taller de Requerimientos Funcionales</span>
+        </div>
+      </div>
+
+      <nav class="topbar-nav" aria-label="Navegación de secciones">
+        <a class="nav-link" href="#sec-aprendiz">1. Aprendiz</a>
+        <a class="nav-link" href="#sec-caso">2. Caso</a>
+        <a class="nav-link" href="#sec-analisis">3. Análisis</a>
+        <a class="nav-link" href="#sec-matriz">4. Matriz RF</a>
+        <a class="nav-link" href="#sec-avance">5. Avance</a>
+        <a class="nav-link" href="#sec-entrega">6. PDF</a>
+      </nav>
+
+      <div class="topbar-status">
+        <span class="save-pill" id="topbar-save-status" aria-live="polite">
+          ● Guardado local activo
+        </span>
+        <span class="mini-progress-pill" id="topbar-progress-pill">
+          <span class="mini-progress-dot" aria-hidden="true"></span>
+          <span id="topbar-progress-text">0/5 Guardados</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SECCIÓN 1: ENCABEZADO -->
+    <section class="card hero-card" id="sec-encabezado" aria-labelledby="main-activity-title">
+        <span class="moment-badge">Actividad Académica Individual · Requerimientos Funcionales</span>
+      </div>
+
+      <h1 class="hero-title" id="main-activity-title">
+        TALLER PRÁCTICO: LEVANTAMIENTO DE REQUERIMIENTOS FUNCIONALES
+      </h1>
+      <p class="hero-subtitle">
+        Analiza un contexto empresarial, identifica sus necesidades y transforma sus procesos en requerimientos funcionales.
+      </p>
+
+      <div class="rules-banner">
+        <h2 class="rules-banner-title">Instrucciones para el desarrollo y entrega</h2>
+        <ul class="rules-list">
+          <li>Elabora tus <strong>cinco (5) requerimientos funcionales</strong> a partir del caso empresarial asignado.</li>
+          <li>Cada requerimiento debe pertenecer a un <strong>módulo diferente</strong> y representar <strong>una única operación CRUD</strong>.</li>
+          <li>Usa identificadores con formato <strong>RF_ABREVIATURA_NÚMERO</strong> (ej. RF_USR_01).</li>
+          <li>Presiona <strong>Guardar requerimiento</strong> en cada tarjeta para confirmar y bloquear tus datos.</li>
+          <li>Si necesitas ajustar algún registro, usa <strong>Editar requerimiento</strong> y vuelve a guardarlo.</li>
+          <li>Al finalizar, descarga el <strong>PDF</strong> que incluirá únicamente los requerimientos guardados para revisión del instructor.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: INFORMACIÓN DEL APRENDIZ -->
+    <section class="card" id="sec-aprendiz" aria-labelledby="title-aprendiz">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Momento 1 · Identificación</span>
+          <h2 class="section-title" id="title-aprendiz">Información del Aprendiz</h2>
+          <p class="section-desc">Diligencia tus datos generales. Estos aparecerán en el encabezado del informe PDF.</p>
+        </div>
+      </div>
+
+      <div class="form-grid-student">
+        <div class="field-group">
+          <label class="field-label" for="student-name">
+            <span>Nombre completo del aprendiz <span class="required-mark">*</span></span>
+          </label>
+          <input
+            type="text"
+            id="student-name"
+            class="field-control"
+            placeholder="Ej. Laura Camila Gómez Pérez"
+            autocomplete="name"
+          />
+          <span class="field-help">Se usa como valor inicial en el campo Responsable de los requerimientos en edición.</span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="student-ficha">
+            <span>Número de ficha <span class="required-mark">*</span></span>
+          </label>
+          <input
+            type="text"
+            id="student-ficha"
+            class="field-control"
+            placeholder="Ej. 2904512"
+          />
+          <span class="field-help">Código de identificación de tu ficha de formación SENA.</span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="student-group">
+            <span>Número de grupo de proyecto <span class="required-mark">*</span></span>
+          </label>
+          <input
+            type="text"
+            id="student-group"
+            class="field-control"
+            placeholder="Ej. Grupo 03"
+          />
+          <span class="field-help">Número o identificador de tu equipo de proyecto formativo.</span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="student-program">
+            <span>Programa de formación</span>
+          </label>
+          <input
+            type="text"
+            id="student-program"
+            class="field-control"
+            placeholder="Ej. Análisis y Desarrollo de Software (ADSO)"
+          />
+          <span class="field-help">Programa técnico o tecnológico que cursas actualmente.</span>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="student-date">
+            <span>Fecha de elaboración</span>
+          </label>
+          <input
+            type="date"
+            id="student-date"
+            class="field-control"
+          />
+          <span class="field-help">Fecha en la que realizas el levantamiento de requerimientos.</span>
+        </div>
+      </div>
+
+      <div class="sync-actions-row">
+        <span class="sync-note">
+          Puedes aplicar tu nombre a los responsables de las tarjetas que estén en edición.
+        </span>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-sync-responsibles">
+          Aplicar nombre a responsables en edición
+        </button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3 Y 4: SELECCIÓN Y CONTEXTO EMPRESARIAL -->
+    <section class="card" id="sec-caso" aria-labelledby="title-casos">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Momento 2 · Estudio de Contexto</span>
+          <h2 class="section-title" id="title-casos">CASOS EMPRESARIALES</h2>
+          <p class="section-desc">Selecciona uno de los diez escenarios empresariales o solicita una asignación aleatoria para realizar tu análisis.</p>
+        </div>
+      </div>
+
+      <div class="case-selector-bar">
+        <div class="field-group">
+          <label class="field-label" for="case-selector">
+            <span>Selecciona el caso empresarial asignado (10 escenarios disponibles)</span>
+          </label>
+          <select id="case-selector" class="field-control" aria-label="Selector de caso empresarial"></select>
+        </div>
+        <button type="button" class="btn btn-navy" id="btn-random-case">
+          Asignar caso aleatorio
+        </button>
+      </div>
+
+      <!-- Panel visual del caso empresarial (SECCIÓN 4) -->
+      <article class="case-showcase" id="case-showcase" aria-live="polite">
+        <div class="case-banner">
+          <div class="case-banner-meta">
+            <span class="case-code-tag" id="case-code-display">CASO 01</span>
+            <span class="case-sector-tag" id="case-sector-display">Comercialización e Inventario</span>
+          </div>
+          <h3 class="case-company-name" id="case-company-display">FERRETERÍA FERROLAMINAS</h3>
+        </div>
+
+        <div class="case-description-box">
+          <h4 class="case-block-title">Descripción del negocio y operación</h4>
+          <p class="case-description-text" id="case-description-display"></p>
+        </div>
+
+        <div class="case-columns">
+          <div class="case-subcard processes">
+            <h4 class="case-block-title">Procesos actuales y manejo de información</h4>
+            <ul class="case-list" id="case-processes-display"></ul>
+          </div>
+
+          <div class="case-subcard problems">
+            <h4 class="case-block-title">Problemáticas identificadas</h4>
+            <ul class="case-list" id="case-problems-display"></ul>
+          </div>
+        </div>
+
+        <div class="case-needs-box">
+          <h4 class="case-block-title">Necesidades generales de la organización</h4>
+          <p class="case-needs-text" id="case-needs-display"></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- SECCIÓN 5: ANÁLISIS ORIENTADOR -->
+    <section class="card" id="sec-analisis" aria-labelledby="title-analisis">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Momento 2 · Interpretación</span>
+          <h2 class="section-title" id="title-analisis">ANÁLISIS DEL CASO</h2>
+          <p class="section-desc">Reflexiona sobre estas cinco preguntas orientadoras antes de redactar tus requerimientos.</p>
+        </div>
+      </div>
+
+      <div class="guiding-grid">
+        <div class="guiding-item">
+          <span class="guiding-num" aria-hidden="true">1</span>
+          <p class="guiding-q">¿Qué procesos realiza actualmente la empresa?</p>
+        </div>
+        <div class="guiding-item">
+          <span class="guiding-num" aria-hidden="true">2</span>
+          <p class="guiding-q">¿Qué información necesita administrar?</p>
+        </div>
+        <div class="guiding-item">
+          <span class="guiding-num" aria-hidden="true">3</span>
+          <p class="guiding-q">¿Qué problemas se presentan en sus procesos actuales?</p>
+        </div>
+        <div class="guiding-item">
+          <span class="guiding-num" aria-hidden="true">4</span>
+          <p class="guiding-q">¿Qué módulos podría necesitar el sistema de información?</p>
+        </div>
+        <div class="guiding-item">
+          <span class="guiding-num" aria-hidden="true">5</span>
+          <p class="guiding-q">¿Qué operaciones deberían poder realizar los usuarios sobre esa información?</p>
+        </div>
+      </div>
+
+      <div class="pedagogical-guide-box">
+        <h3 class="pedagogical-guide-title">Guía de referencia para estructurar cada requerimiento funcional</h3>
+        <div class="pedagogical-guide-grid">
+          <div class="guide-snippet">
+            <strong>1. Nomenclatura de ID:</strong><br />
+            Usa <code>RF_[ABREVIATURA]_[NÚMERO]</code> coherente con el módulo.<br />
+            <em>Ejemplos:</em> <code>RF_USR_01</code>, <code>RF_INV_01</code>, <code>RF_PED_01</code>.
+          </div>
+          <div class="guide-snippet">
+            <strong>2. Operación CRUD única:</strong><br />
+            Elige solo una acción por requerimiento (<code>CREATE</code>, <code>READ</code>, <code>UPDATE</code> o <code>INACTIVATE</code>). Evita combinar varias acciones en un mismo requerimiento.
+          </div>
+          <div class="guide-snippet">
+            <strong>3. Estructura de Regla de Negocio:</strong><br />
+            <em>"El sistema debe permitir [acción única] sobre [entidad], mediante [datos necesarios], aplicando [validaciones]."</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 6: MATRIZ DE REQUERIMIENTOS -->
+    <section class="card" id="sec-matriz" aria-labelledby="title-matriz">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Momento 3 · Construcción Técnica</span>
+          <h2 class="section-title" id="title-matriz">MATRIZ DE LEVANTAMIENTO DE REQUERIMIENTOS FUNCIONALES</h2>
+          <p class="section-desc">
+            Diligencia cada requerimiento y presiona <strong>Guardar requerimiento</strong> para confirmar el registro. Solo los requerimientos guardados se incluirán en el PDF para revisión del instructor.
+          </p>
+        </div>
+      </div>
+
+      <div class="requirements-stack" id="requirements-container"></div>
+    </section>
+
+    <!-- SECCIÓN 7: AVANCE -->
+    <section class="card" id="sec-avance" aria-labelledby="title-avance">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Estado de Registros</span>
+          <h2 class="section-title" id="title-avance">Panel de Avance de Requerimientos Guardados</h2>
+          <p class="section-desc">Visualiza cuántos requerimientos has guardado explícitamente y cuáles permanecen en edición.</p>
+        </div>
+      </div>
+
+      <div class="progress-metrics-grid">
+        <div class="metric-box">
+          <div class="metric-label">Requerimientos guardados</div>
+          <div class="metric-value" id="metric-saved-reqs">0 / 5</div>
+          <div class="metric-sub">Confirmados con el botón Guardar</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">En edición / sin guardar</div>
+          <div class="metric-value" id="metric-editing-reqs">5 / 5</div>
+          <div class="metric-sub">No se exportan hasta guardarse</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Datos del aprendiz</div>
+          <div class="metric-value" id="metric-student-badge">Pendiente</div>
+          <div class="metric-sub" id="metric-student-status">Nombre, ficha y grupo</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Porcentaje guardado</div>
+          <div class="metric-value" id="metric-percentage">0%</div>
+          <div class="metric-sub">Progreso de entrega PDF</div>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-header">
+          <span>Requerimientos guardados para revisión del instructor</span>
+          <span id="progress-bar-label">0%</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar-track">
+          <div class="progress-fill" id="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <div class="status-summary-box state-pending" id="status-summary-box" role="region" aria-live="polite">
+        <h3 class="status-summary-title" id="status-summary-title">
+          Aún no hay requerimientos guardados
+        </h3>
+        <p class="status-summary-text" id="status-summary-text">
+          Diligencia los campos de cada tarjeta y haz clic en "Guardar requerimiento". El sistema conservará exactamente lo que escribas para que tu instructor lo revise en el PDF.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 8: ENTREGA -->
+    <section class="card" id="sec-entrega" aria-labelledby="title-entrega">
+      <div class="section-header">
+        <div>
+          <span class="section-step">Momento 4 · Evidencia Final</span>
+          <h2 class="section-title" id="title-entrega">Descarga de Evidencia en PDF</h2>
+          <p class="section-desc">Genera el documento PDF limpio únicamente con los requerimientos que hayas guardado mediante el botón de cada tarjeta.</p>
+        </div>
+      </div>
+
+      <div class="delivery-storage-banner">
+        <div>
+          <div class="storage-text-primary" id="delivery-save-indicator">
+            ● Progreso almacenado localmente en este dispositivo
+          </div>
+          <div class="storage-text-secondary">
+            Solo se permite descargar el PDF cuando tienes requerimientos guardados, e incluirá exclusivamente los registros confirmados.
+          </div>
+        </div>
+      </div>
+
+      <div class="delivery-buttons-grid">
+        <button type="button" class="btn btn-primary" id="btn-download-pdf" disabled>
+          DESCARGAR PDF / IMPRIMIR INFORME (0/5 GUARDADOS)
+        </button>
+        <button type="button" class="btn btn-danger-outline" id="btn-reset-activity">
+          Reiniciar actividad
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal personalizado de confirmación de reinicio -->
+  <div class="modal-backdrop" id="reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <div class="modal-dialog">
+      <h3 class="modal-title" id="reset-modal-title">¿Reiniciar toda la actividad?</h3>
+      <p class="modal-body">
+        Esta acción eliminará todos los datos del aprendiz y los cinco requerimientos registrados en este navegador. No podrás deshacer este cambio.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="btn-cancel-reset">Cancelar</button>
+        <button type="button" class="btn btn-danger-outline" id="btn-confirm-reset">Sí, borrar y reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de notificaciones -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Informe imprimible limpio (visible solo en @media print) -->
+  <section id="print-report" aria-hidden="true"></section>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* =========================================================================
+         1. BASE DE CONOCIMIENTO: LOS DIEZ CASOS EMPRESARIALES
+      ========================================================================= */
+      const BUSINESS_CASES = [
+        {
+          id: "caso_01",
+          code: "CASO 01",
+          company: "FERRETERÍA FERROLAMINAS",
+          sector: "Comercialización e Inventario",
+          description:
+            "Empresa comercializadora dedicada a la venta al detal y al por mayor de herramientas manuales y eléctricas, materiales de construcción, elementos eléctricos, pinturas, tuberías y artículos generales de ferretería. En su operación diaria intervienen vendedores de mostrador, un encargado de bodega, un auxiliar de compras y el administrador del punto de venta, quienes atienden tanto a clientes particulares como a maestros de obra y contratistas.",
+          currentProcesses: [
+            "Recepción física de mercancía enviada por proveedores verificando remisiones en papel.",
+            "Registro y consulta de existencias por parte de los vendedores en una hoja de cálculo de Excel compartida en red local.",
+            "Anotación manual en cuadernos y planillas de las entradas y salidas de mercancía por parte del encargado de bodega.",
+            "Gestión de ventas en mostrador con listas de precios impresas o archivos individuales que no siempre están sincronizados.",
+            "Recepción y manejo de devoluciones de clientes sin un registro formal que afecte automáticamente el inventario."
+          ],
+          problems: [
+            "Diferencias frecuentes entre las existencias registradas en Excel y las cantidades físicas reales en bodega.",
+            "Productos registrados múltiples veces con nombres diferentes o códigos inconsistentes.",
+            "Dificultades para identificar oportunamente productos agotados o con stock mínimo.",
+            "Falta de trazabilidad sobre quién realizó cada entrada, salida o ajuste de mercancía.",
+            "Información de proveedores, contactos y condiciones comerciales distribuida en varios archivos sueltos.",
+            "Errores al actualizar los precios de venta cuando cambian los costos de compra.",
+            "Demoras significativas al finalizar la jornada para consolidar las ventas del día."
+          ],
+          needs:
+            "La empresa busca organizar sus procesos comerciales y operativos mediante un sistema que centralice y controle de forma confiable sus productos, movimientos de inventario, proveedores, precios y operaciones de venta."
+        },
+        {
+          id: "caso_02",
+          code: "CASO 02",
+          company: "RESTAURANTE LA CABAÑA PARRILLA CHIMENEA",
+          sector: "Pedidos y Administración Gastronómica",
+          description:
+            "Restaurante de comida tradicional y cortes a la parrilla que atiende comensales en salón y gestiona pedidos para llevar y domicilio. En su flujo diario participan meseros, personal de cocina y parrilla, cajero, encargado de compras e insumos y el administrador general.",
+          currentProcesses: [
+            "Toma de pedidos en salón mediante comandas de papel escritas a mano por los meseros y entregadas físicamente en la barra de cocina.",
+            "Recepción de reservas de mesas y pedidos para llevar a través de mensajes de WhatsApp y llamadas telefónicas.",
+            "Control de ingredientes e insumos perecederos en una hoja de Excel que se actualiza únicamente al finalizar la jornada.",
+            "Registro manual de compras a proveedores de carnes, verduras y bebidas en carpetas físicas.",
+            "Cierre diario de caja sumando manualmente las comandas pagadas frente al efectivo y transferencias recibidas."
+          ],
+          problems: [
+            "Pedidos que llegan incompletos a cocina o con modificaciones de términos/acompañamientos no registradas claramente.",
+            "Confusión recurrente entre pedidos pertenecientes a diferentes mesas en horas pico.",
+            "Dificultades para conocer en tiempo real la disponibilidad de platos según los ingredientes existentes.",
+            "Desconocimiento de las cantidades reales de ingredientes disponibles durante el servicio.",
+            "Errores de cálculo y omisiones al consolidar las ventas al cierre del día.",
+            "Reservas duplicadas o anotadas en diferentes cuadernos y chats de WhatsApp.",
+            "Falta de organización en el seguimiento y estado de preparación de los pedidos para llevar."
+          ],
+          needs:
+            "La empresa necesita mejorar la coordinación operativa entre atención al cliente, cocina, control de inventario de insumos y administración financiera."
+        },
+        {
+          id: "caso_03",
+          code: "CASO 03",
+          company: "TALLERES BAEZ",
+          sector: "Taller de Servicio Automotriz",
+          description:
+            "Taller especializado en el mantenimiento preventivo y correctivo de motocicletas de diversas marcas y cilindrajes. Sus servicios abarcan cambios de aceite, sincronización, revisiones mecánicas generales, mantenimiento de frenos, reparación de motores e instalación de repuestos, operado por mecánicos técnicos, un auxiliar de almacén de repuestos y el administrador.",
+          currentProcesses: [
+            "Registro de datos de propietarios y motocicletas en cuadernos de ingreso diario en la recepción.",
+            "Diligenciamiento de una ficha física por motocicleta donde los mecánicos escriben a mano los diagnósticos y trabajos ejecutados.",
+            "Entrega de anotaciones en papel al administrador, quien transcribe los servicios realizados y repuestos usados a una hoja de Excel.",
+            "Agendamiento informal de citas de mantenimiento por teléfono sin control de capacidad del taller.",
+            "Verificación verbal de garantías revisando fichas físicas archivadas por fecha."
+          ],
+          problems: [
+            "Historiales de mantenimiento incompletos o ilegibles por deterioro de las fichas físicas.",
+            "Alta dificultad para consultar rápidamente las reparaciones anteriores de una motocicleta.",
+            "Pérdida de información de contacto y datos técnicos de algunos clientes.",
+            "Desorganización en la programación de citas y acumulación de motocicletas sin turno claro.",
+            "Falta de control sobre los repuestos entregados y utilizados en cada orden de servicio.",
+            "Dificultades para conocer en tiempo real el estado de los trabajos pendientes o en ejecución.",
+            "Problemas para realizar seguimiento formal a los tiempos y condiciones de garantía de los servicios."
+          ],
+          needs:
+            "La empresa necesita organizar y centralizar la información de clientes, motocicletas, órdenes de servicio, mecánicos asignados, citas y consumo de repuestos."
+        },
+        {
+          id: "caso_04",
+          code: "CASO 04",
+          company: "INSTITUTO TÉCNICO LOS ANDES",
+          sector: "Gestión de Formación y Matrículas",
+          description:
+            "Institución privada de educación para el trabajo que ofrece cursos de formación técnica en herramientas ofimáticas, programación de software, diseño gráfico e inglés. Su estructura administrativa integra coordinadores académicos, docentes, personal de admisiones y cartera, y estudiantes inscritos en distintas jornadas.",
+          currentProcesses: [
+            "Diligenciamiento de formularios físicos en papel cuando un aspirante solicita matrícula en un programa.",
+            "Consolidación manual de la base de datos de estudiantes en archivos de Excel separados por período académico.",
+            "Distribución de horarios de docentes y asignación de aulas mediante documentos compartidos sin validación automática.",
+            "Control de asistencia en planillas impresas que cada docente entrega al finalizar el mes.",
+            "Seguimiento de pagos y cuotas de matrícula revisando recibos físicos y extractos bancarios manualmente."
+          ],
+          problems: [
+            "Registros duplicados de estudiantes antiguos que se matriculan en nuevos cursos.",
+            "Dificultades para conocer en tiempo real los cupos disponibles por grupo y horario.",
+            "Cruces de horarios entre docentes, grupos y salones asignados.",
+            "Demoras para identificar oportunamente estudiantes con pagos o cuotas pendientes.",
+            "Información académica y notas dispersas en diferentes archivos de Excel.",
+            "Dificultad para consultar el historial completo de matrículas y cursos aprobados por estudiante.",
+            "Falta de control centralizado y oportuno de la asistencia a clase."
+          ],
+          needs:
+            "La academia busca organizar e integrar sus procesos académicos y administrativos mediante un sistema de información centralizado."
+        },
+        {
+          id: "caso_05",
+          code: "CASO 05",
+          company: "RÁPIDO EXPRESS",
+          sector: "Empresa de Mensajería y Logística",
+          description:
+            "Empresa dedicada a la prestación de servicios de mensajería urbana, transporte de paquetes y entregas locales y regionales. Su operación conecta a clientes remitentes, destinatarios, operadores de recepción, un coordinador de despacho y una flota de mensajeros motorizados y en furgón.",
+          currentProcesses: [
+            "Recepción y registro de solicitudes de envío en formatos físicos talonarios con copia al carbón.",
+            "Impresión de manifiestos de carga en papel entregados a cada mensajero al iniciar su turno.",
+            "Reporte de novedades de entrega, direcciones erradas o paquetes entregados mediante mensajes de WhatsApp al coordinador.",
+            "Asignación manual de rutas según la disponibilidad percibida de los mensajeros en base.",
+            "Búsqueda manual en talonarios cuando un cliente llama a preguntar por el estado de su envío."
+          ],
+          problems: [
+            "Dificultad para conocer en tiempo real la ubicación o el estado actualizado de un paquete.",
+            "Registros incompletos o con errores de escritura en datos de remitentes, destinatarios y direcciones.",
+            "Asignaciones duplicadas de una misma entrega a dos mensajeros distintos.",
+            "Falta de control claro sobre qué mensajeros están disponibles, en ruta o fuera de servicio.",
+            "Demoras para identificar paquetes pendientes de despacho o rezagados en bodega.",
+            "Dificultad para registrar, evidenciar y consultar novedades de entrega fallida.",
+            "Información fragmentada sobre envíos, rutas ejecutadas y clientes frecuentes."
+          ],
+          needs:
+            "La empresa necesita mejorar la administración y trazabilidad integral de sus envíos, mensajeros, rutas asignadas y estados de entrega."
+        },
+        {
+          id: "caso_06",
+          code: "CASO 06",
+          company: "HOTEL SOGAMOSO REAL",
+          sector: "Administración Hotelera",
+          description:
+            "Hotel rural turístico que ofrece alojamiento en diferentes tipos de habitaciones, servicios complementarios (alimentación, lavandería, zonas húmedas) y paquetes turísticos regionales. En su operación participan recepcionistas, personal de camarería y limpieza, guías aliados y el administrador.",
+          currentProcesses: [
+            "Recepción de reservas de alojamiento mediante llamadas telefónicas, mensajes de WhatsApp y correo electrónico.",
+            "Registro manual de fechas de ingreso (check-in) y salida (check-out) en un calendario elaborado en Excel.",
+            "Anotación de datos de huéspedes en libros de registro físico al momento de su llegada.",
+            "Comunicación verbal o por radio del personal de limpieza para avisar cuando una habitación queda lista.",
+            "Anotación en hojas sueltas de consumos y servicios adicionales cargados a cada habitación."
+          ],
+          problems: [
+            "Reservas duplicadas (overbooking) para una misma habitación en fechas coincidentes.",
+            "Desconocimiento en recepción del estado actualizado de las habitaciones (ocupada, libre, en limpieza, mantenimiento).",
+            "Errores frecuentes al registrar o modificar las fechas de ingreso y salida de los huéspedes.",
+            "Dificultades para consultar el historial y los datos personales de huéspedes frecuentes.",
+            "Falta de seguimiento y cobro oportuno de los servicios adicionales consumidos durante la estadía.",
+            "Desorganización en la asignación y verificación de tareas de limpieza por piso o cabaña.",
+            "Problemas para consolidar con exactitud los ingresos discriminados por alojamiento y servicios."
+          ],
+          needs:
+            "El hotel busca centralizar y controlar en tiempo real la información de reservas, huéspedes, estado de habitaciones, limpieza y servicios complementarios."
+        },
+        {
+          id: "caso_07",
+          code: "CASO 07",
+          company: "TEXTILES ANDINOS",
+          sector: "Producción y Control de Materiales",
+          description:
+            "Pequeña empresa manufacturera dedicada al diseño, confección y comercialización de uniformes empresariales, dotaciones industriales, camisetas y prendas personalizadas por pedido. Participan asesores comerciales, patronistas, jefe de producción, operarios de corte y confección, control de calidad y encargado de almacén de insumos.",
+          currentProcesses: [
+            "Toma de pedidos de clientes empresariales en formatos físicos especificando tallas, colores y bordados.",
+            "Planificación de lotes de producción mediante archivos de Excel independientes por área.",
+            "Control manual en tarjetas kardex de papel de telas, hilos, botones, cierres y demás materias primas.",
+            "Asignación verbal de tareas diarias de corte y confección a los operarios del taller.",
+            "Anotación informal de prendas con defectos o devoluciones internas sin trazabilidad del lote."
+          ],
+          problems: [
+            "Dificultad para conocer el porcentaje de avance real de cada pedido en planta.",
+            "Diferencias constantes entre los materiales físicos disponibles y los saldos registrados en tarjetas.",
+            "Falta de trazabilidad de los lotes y productos mientras atraviesan corte, confección y acabado.",
+            "Errores de transcripción en las cantidades y curvas de tallas solicitadas por los clientes.",
+            "Dificultad para identificar oportunamente pedidos retrasados frente a la fecha de entrega pactada.",
+            "Poca claridad sobre las actividades y cargas de trabajo asignadas a cada operario.",
+            "Problemas para registrar, cuantificar y gestionar productos defectuosos o reprocesos."
+          ],
+          needs:
+            "La empresa requiere organizar e integrar los procesos de gestión de pedidos, planificación de producción, control de materiales y entregas."
+        },
+        {
+          id: "caso_08",
+          code: "CASO 08",
+          company: "COOPERATIVA AGROPECUARIA EL CAMPO",
+          sector: "Recepción y Comercialización Agrícola",
+          description:
+            "Cooperativa rural que agrupa a pequeños y medianos productores agrícolas de la región, recibiendo cosechas de papa, cebolla, zanahoria y hortalizas en su centro de acopio para clasificarlas, conformar lotes y comercializarlas a centrales de abastos y compradores institucionales.",
+          currentProcesses: [
+            "Pesaje y recepción de bultos en el centro de acopio registrando los datos en planillas impresas.",
+            "Clasificación manual por calidad y calibre sin codificación única de lotes recibidos.",
+            "Transcripción posterior de planillas de productores, cantidades recibidas y precios de liquidación a múltiples archivos de Excel.",
+            "Registro manual de despachos a compradores comerciales mediante remisiones físicas.",
+            "Cálculo manual de descuentos por aportes cooperativos y liquidación de pagos a cada productor."
+          ],
+          problems: [
+            "Errores de digitación y lectura al registrar el peso bruto y neto de los productos recibidos.",
+            "Dificultad para identificar con certeza el productor de origen de cada entrega cuando se mezclan cargas.",
+            "Falta de seguimiento y trazabilidad de los lotes recibidos desde el acopio hasta la venta.",
+            "Diferencias entre las cantidades totales recibidas de productores y las cantidades efectivamente comercializadas.",
+            "Demoras significativas en el cálculo y liquidación de pagos a los productores asociados.",
+            "Dificultad para consultar el historial detallado de entregas y liquidaciones de un productor.",
+            "Falta de control sobre los compradores, pedidos pendientes y despachos realizados."
+          ],
+          needs:
+            "La cooperativa necesita organizar y transparentar la información de productores asociados, entregas en acopio, productos, lotes, compradores y liquidación de pagos."
+        },
+        {
+          id: "caso_09",
+          code: "CASO 09",
+          company: "TALENTO ORGANIZACIONAL",
+          sector: "Administración de Personal",
+          description:
+            "Empresa prestadora de servicios empresariales y outsourcing operativo que cuenta con múltiples áreas funcionales y personal distribuido en varias sedes. El equipo de Talento Humano administra contratos, cargos, departamentos, turnos, novedades de asistencia, permisos y expedientes laborales.",
+          currentProcesses: [
+            "Archivo de hojas de vida, contratos, afiliaciones y soportes laborales en carpetas físicas por empleado.",
+            "Administración de turnos, horarios, vacaciones y novedades de nómina en múltiples hojas de Excel.",
+            "Recepción de solicitudes de permisos e incapacidades por correo electrónico o formatos impresos firmados.",
+            "Consolidación manual de reportes de asistencia enviados por los supervisores de cada sede.",
+            "Actualización manual de cambios de cargo, sede o salario sin historial de auditoría."
+          ],
+          problems: [
+            "Documentación laboral de los empleados dispersa en carpetas físicas difíciles de consultar rápidamente.",
+            "Registros duplicados o desactualizados de datos personales y contractuales entre sedes.",
+            "Dificultad para consultar de forma estructurada los cargos, departamentos y jerarquías vigentes.",
+            "Errores frecuentes al consolidar novedades de asistencia, retardos y horas extra.",
+            "Demoras en el trámite, aprobación y seguimiento de solicitudes de permisos y vacaciones.",
+            "Falta de trazabilidad histórica sobre los cambios realizados en la información del personal.",
+            "Dificultad para consultar en tiempo real la disponibilidad del personal activo por área y sede."
+          ],
+          needs:
+            "La organización necesita mejorar y centralizar la administración de su información laboral, estructura organizacional y procesos internos de gestión humana."
+        },
+        {
+          id: "caso_10",
+          code: "CASO 10",
+          company: "EVENTOS 1A",
+          sector: "Organización y Alquiler de Equipos",
+          description:
+            "Empresa especializada en la logística y producción de eventos empresariales, sociales y académicos, además del alquiler de equipos audiovisuales y logísticos como sonido profesional, iluminación, pantallas LED, computadores, cámaras, tarimas y mobiliario.",
+          currentProcesses: [
+            "Atención de solicitudes de clientes y elaboración manual de cotizaciones en plantillas de Excel.",
+            "Consulta de disponibilidad de equipos técnicos en una hoja de cálculo compartida que actualizan varios empleados.",
+            "Programación de fechas de eventos en un tablero físico y calendarios personales de los coordinadores.",
+            "Documentación de salidas a evento (despachos) y retornos a bodega mediante formatos físicos firmados.",
+            "Registro manual de anticipos y saldos pagados por cada evento contratado."
+          ],
+          problems: [
+            "Reservas simultáneas de un mismo equipo técnico para dos eventos en la misma fecha.",
+            "Falta de control preciso sobre qué equipos se encuentran alquilados, en mantenimiento o en bodega.",
+            "Dificultad para consultar rápidamente la disponibilidad real de inventario por rango de fechas.",
+            "Pérdida de información y versiones desactualizadas de cotizaciones enviadas a clientes.",
+            "Falta de registro formal de daños, averías o elementos faltantes al momento de la devolución.",
+            "Desorganización en la programación general de eventos y asignación de personal técnico.",
+            "Dificultad para consultar el historial de eventos, alquileres y comportamiento de pago de los clientes."
+          ],
+          needs:
+            "La empresa necesita centralizar y controlar la administración de clientes, eventos, cotizaciones, inventario de equipos, reservas, despachos y devoluciones."
+        }
+      ];
+
+      /* =========================================================================
+         2. CONSTANTES Y ESTADO DE LA APLICACIÓN
+      ========================================================================= */
+      const STORAGE_KEY = "sena_taller_rf_v2";
+      const TOTAL_REQUIREMENTS = 5;
+      const CRUD_OPTIONS = [
+        { value: "CREATE", label: "CREATE / CREAR" },
+        { value: "READ", label: "READ / CONSULTAR" },
+        { value: "UPDATE", label: "UPDATE / ACTUALIZAR" },
+        { value: "INACTIVATE", label: "INACTIVATE / INACTIVAR" }
+      ];
+      const PRIORITY_OPTIONS = [
+        { value: "ALTA", label: "ALTA" },
+        { value: "MEDIA", label: "MEDIA" },
+        { value: "BAJA", label: "BAJA" }
+      ];
+
+      function createEmptyRequirement(index) {
+        return {
+          index: index,
+          id: "",
+          modulo: "",
+          crud: "",
+          regla: "",
+          prioridad: "",
+          responsable: "",
+          observaciones: "",
+          responsableManual: false,
+          isSaved: false,
+          savedAt: ""
+        };
+      }
+
+      function createDefaultState() {
+        const today = new Date().toISOString().split("T")[0];
+        return {
+          student: {
+            name: "",
+            ficha: "",
+            group: "",
+            program: "",
+            date: today
+          },
+          selectedCaseId: BUSINESS_CASES[0].id,
+          requirements: Array.from({ length: TOTAL_REQUIREMENTS }, (_, idx) =>
+            createEmptyRequirement(idx)
+          )
+        };
+      }
+
+      let appState = loadState();
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return createDefaultState();
+          const parsed = JSON.parse(raw);
+          const base = createDefaultState();
+
+          if (parsed.student && typeof parsed.student === "object") {
+            base.student = {
+              name: String(parsed.student.name || ""),
+              ficha: String(parsed.student.ficha || ""),
+              group: String(parsed.student.group || ""),
+              program: String(parsed.student.program || ""),
+              date: String(parsed.student.date || base.student.date)
+            };
+          }
+
+          if (
+            typeof parsed.selectedCaseId === "string" &&
+            BUSINESS_CASES.some((c) => c.id === parsed.selectedCaseId)
+          ) {
+            base.selectedCaseId = parsed.selectedCaseId;
+          }
+
+          if (Array.isArray(parsed.requirements) && parsed.requirements.length === TOTAL_REQUIREMENTS) {
+            base.requirements = parsed.requirements.map((item, idx) => ({
+              index: idx,
+              id: String(item.id || ""),
+              modulo: String(item.modulo || ""),
+              crud: CRUD_OPTIONS.some((o) => o.value === item.crud) ? item.crud : "",
+              regla: String(item.regla || ""),
+              prioridad: PRIORITY_OPTIONS.some((o) => o.value === item.prioridad) ? item.prioridad : "",
+              responsable: String(item.responsable || ""),
+              observaciones: String(item.observaciones || ""),
+              responsableManual: Boolean(item.responsableManual),
+              isSaved: Boolean(item.isSaved),
+              savedAt: String(item.savedAt || "")
+            }));
+          }
+
+          return base;
+        } catch (err) {
+          return createDefaultState();
+        }
+      }
+
+      function persistToLocalStorage() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString("es-CO", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          });
+          const topPill = document.getElementById("topbar-save-status");
+          const deliveryIndicator = document.getElementById("delivery-save-indicator");
+          if (topPill) {
+            topPill.textContent = "● Almacenado (" + timeStr + ")";
+          }
+          if (deliveryIndicator) {
+            deliveryIndicator.textContent =
+              "● Progreso almacenado localmente en este dispositivo (última actualización: " + timeStr + ")";
+          }
+        } catch (err) {
+          // Continuar operando en memoria si localStorage no está disponible
+        }
+      }
+
+      /* =========================================================================
+         3. ACCIONES DE GUARDAR Y EDITAR POR REQUERIMIENTO (SIN JUICIO DE CORRECCIÓN)
+      ========================================================================= */
+      function hasAllSevenFieldsFilled(req) {
+        return (
+          String(req.id || "").trim().length > 0 &&
+          String(req.modulo || "").trim().length > 0 &&
+          String(req.crud || "").trim().length > 0 &&
+          String(req.regla || "").trim().length > 0 &&
+          String(req.prioridad || "").trim().length > 0 &&
+          String(req.responsable || "").trim().length > 0 &&
+          String(req.observaciones || "").trim().length > 0
+        );
+      }
+
+      function saveRequirementCard(idx) {
+        const req = appState.requirements[idx];
+        if (!req) return;
+
+        // Solo verifica que los 7 campos tengan contenido para no guardar una tarjeta vacía,
+        // sin validar si la redacción, el ID o la lógica son correctos o incorrectos.
+        if (!hasAllSevenFieldsFilled(req)) {
+          showToast(
+            "Diligencia los 7 campos del Requerimiento 0" + (idx + 1) + " antes de guardarlo.",
+            true
+          );
+          return;
+        }
+
+        const now = new Date();
+        req.isSaved = true;
+        req.savedAt = now.toLocaleTimeString("es-CO", {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+        persistToLocalStorage();
+        syncRequirementCardState(idx);
+        updateProgressAndDeliveryUI();
+        showToast("Requerimiento 0" + (idx + 1) + " guardado para revisión del instructor.");
+      }
+
+      function editRequirementCard(idx) {
+        const req = appState.requirements[idx];
+        if (!req) return;
+
+        req.isSaved = false;
+        persistToLocalStorage();
+        syncRequirementCardState(idx);
+        updateProgressAndDeliveryUI();
+
+        const firstInput = document.getElementById("req-" + idx + "-id");
+        if (firstInput) firstInput.focus();
+        showToast("Requerimiento 0" + (idx + 1) + " habilitado para edición.");
+      }
+
+      /* =========================================================================
+         4. RENDERIZADO DE INTERFAZ Y SINCRONIZACIÓN DOM
+      ========================================================================= */
+      function initCaseSelector() {
+        const selector = document.getElementById("case-selector");
+        selector.innerHTML = "";
+        BUSINESS_CASES.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c.id;
+          opt.textContent = c.code + ". " + c.company + " – " + c.sector;
+          selector.appendChild(opt);
+        });
+        selector.value = appState.selectedCaseId;
+      }
+
+      function renderSelectedCase() {
+        const selected =
+          BUSINESS_CASES.find((c) => c.id === appState.selectedCaseId) || BUSINESS_CASES[0];
+
+        document.getElementById("case-selector").value = selected.id;
+        document.getElementById("case-code-display").textContent = selected.code;
+        document.getElementById("case-sector-display").textContent = selected.sector;
+        document.getElementById("case-company-display").textContent = selected.company;
+        document.getElementById("case-description-display").textContent = selected.description;
+        document.getElementById("case-needs-display").textContent = selected.needs;
+
+        const processesList = document.getElementById("case-processes-display");
+        processesList.innerHTML = "";
+        selected.currentProcesses.forEach((proc) => {
+          const li = document.createElement("li");
+          li.textContent = proc;
+          processesList.appendChild(li);
+        });
+
+        const problemsList = document.getElementById("case-problems-display");
+        problemsList.innerHTML = "";
+        selected.problems.forEach((prob) => {
+          const li = document.createElement("li");
+          li.textContent = prob;
+          problemsList.appendChild(li);
+        });
+      }
+
+      function buildRequirementCards() {
+        const container = document.getElementById("requirements-container");
+        container.innerHTML = "";
+
+        appState.requirements.forEach((req, idx) => {
+          const numStr = String(idx + 1).padStart(2, "0");
+
+          const article = document.createElement("article");
+          article.className = "req-card";
+          article.id = "req-card-" + idx;
+
+          // Header de tarjeta
+          const header = document.createElement("div");
+          header.className = "req-card-header";
+
+          const titleWrap = document.createElement("div");
+          titleWrap.className = "req-title-wrap";
+
+          const badgeNum = document.createElement("span");
+          badgeNum.className = "req-badge-number";
+          badgeNum.textContent = "REQUERIMIENTO " + numStr + " DE 05";
+
+          const modPreview = document.createElement("span");
+          modPreview.className = "req-module-preview";
+          modPreview.id = "req-mod-preview-" + idx;
+
+          titleWrap.appendChild(badgeNum);
+          titleWrap.appendChild(modPreview);
+
+          const statusGroup = document.createElement("div");
+          statusGroup.className = "req-status-group";
+
+          const prioBadge = document.createElement("span");
+          prioBadge.className = "priority-chip";
+          prioBadge.id = "req-prio-chip-" + idx;
+          prioBadge.style.display = "none";
+
+          const statusChip = document.createElement("span");
+          statusChip.className = "status-chip editing";
+          statusChip.id = "req-status-chip-" + idx;
+
+          statusGroup.appendChild(prioBadge);
+          statusGroup.appendChild(statusChip);
+
+          header.appendChild(titleWrap);
+          header.appendChild(statusGroup);
+
+          // Cuerpo del formulario de la tarjeta
+          const body = document.createElement("div");
+          body.className = "req-card-body";
+
+          // Fila 1: ID, MÓDULO, CRUD
+          const row1 = document.createElement("div");
+          row1.className = "req-row-3";
+
+          row1.appendChild(
+            createInputField({
+              id: "req-" + idx + "-id",
+              label: "1. ID",
+              placeholder: "RF_USR_01",
+              help: "Utiliza la estructura RF_ABREVIATURA_NÚMERO.",
+              value: req.id,
+              onInput: (val) => {
+                appState.requirements[idx].id = val;
+                persistToLocalStorage();
+              }
+            })
+          );
+
+          row1.appendChild(
+            createInputField({
+              id: "req-" + idx + "-modulo",
+              label: "2. MÓDULO",
+              placeholder: "Usuarios, Inventario, Clientes, Pedidos...",
+              help: "Especifica el módulo al que pertenece el requerimiento.",
+              value: req.modulo,
+              onInput: (val) => {
+                appState.requirements[idx].modulo = val;
+                modPreview.textContent = val.trim()
+                  ? "Módulo: " + val.trim()
+                  : "Módulo sin definir";
+                persistToLocalStorage();
+              }
+            })
+          );
+
+          row1.appendChild(
+            createSelectField({
+              id: "req-" + idx + "-crud",
+              label: "3. CRUD",
+              defaultOption: "-- Selecciona una operación --",
+              options: CRUD_OPTIONS,
+              help: "Selecciona una única operación CRUD por requerimiento.",
+              value: req.crud,
+              onChange: (val) => {
+                appState.requirements[idx].crud = val;
+                persistToLocalStorage();
+              }
+            })
+          );
+
+          // Fila 2: REGLA / REQUERIMIENTO
+          const row2 = createTextareaField({
+            id: "req-" + idx + "-regla",
+            label: "4. REGLA / REQUERIMIENTO",
+            placeholder: "El sistema debe permitir...",
+            help: "Describe de forma clara y verificable qué debe hacer el sistema.",
+            rows: 4,
+            value: req.regla,
+            onInput: (val) => {
+              appState.requirements[idx].regla = val;
+              persistToLocalStorage();
+            }
+          });
+
+          // Fila 3: PRIORIDAD y RESPONSABLE
+          const row3 = document.createElement("div");
+          row3.className = "req-row-2";
+
+          row3.appendChild(
+            createSelectField({
+              id: "req-" + idx + "-prioridad",
+              label: "5. PRIORIDAD",
+              defaultOption: "-- Selecciona prioridad --",
+              options: PRIORITY_OPTIONS,
+              help: "Evalúa la importancia de esta funcionalidad según las necesidades de la empresa.",
+              value: req.prioridad,
+              onChange: (val) => {
+                appState.requirements[idx].prioridad = val;
+                syncPriorityBadge(idx);
+                persistToLocalStorage();
+              }
+            })
+          );
+
+          row3.appendChild(
+            createInputField({
+              id: "req-" + idx + "-responsable",
+              label: "6. RESPONSABLE",
+              placeholder: "Nombre del aprendiz responsable",
+              help: "Nombre del aprendiz que elabora este requerimiento.",
+              value: req.responsable,
+              onInput: (val) => {
+                appState.requirements[idx].responsable = val;
+                appState.requirements[idx].responsableManual = true;
+                persistToLocalStorage();
+              }
+            })
+          );
+
+          // Fila 4: OBSERVACIONES
+          const row4 = createTextareaField({
+            id: "req-" + idx + "-observaciones",
+            label: "7. OBSERVACIONES",
+            placeholder: "Describe validaciones, restricciones, dependencias o condiciones especiales...",
+            help: "Complementa la regla del requerimiento con información relevante del proceso.",
+            rows: 3,
+            value: req.observaciones,
+            onInput: (val) => {
+              appState.requirements[idx].observaciones = val;
+              persistToLocalStorage();
+            }
+          });
+
+          body.appendChild(row1);
+          body.appendChild(row2);
+          body.appendChild(row3);
+          body.appendChild(row4);
+
+          // Pie de tarjeta con los 2 botones: Guardar y Editar
+          const footer = document.createElement("div");
+          footer.className = "req-card-footer";
+
+          const footerHint = document.createElement("span");
+          footerHint.className = "req-footer-hint";
+          footerHint.id = "req-footer-hint-" + idx;
+
+          const buttonsWrap = document.createElement("div");
+          buttonsWrap.className = "req-footer-buttons";
+
+          const saveBtn = document.createElement("button");
+          saveBtn.type = "button";
+          saveBtn.className = "btn btn-primary btn-sm";
+          saveBtn.id = "btn-save-req-" + idx;
+          saveBtn.textContent = "Guardar requerimiento";
+          saveBtn.addEventListener("click", () => saveRequirementCard(idx));
+
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.className = "btn btn-edit btn-sm";
+          editBtn.id = "btn-edit-req-" + idx;
+          editBtn.textContent = "Editar requerimiento";
+          editBtn.addEventListener("click", () => editRequirementCard(idx));
+
+          buttonsWrap.appendChild(saveBtn);
+          buttonsWrap.appendChild(editBtn);
+
+          footer.appendChild(footerHint);
+          footer.appendChild(buttonsWrap);
+
+          article.appendChild(header);
+          article.appendChild(body);
+          article.appendChild(footer);
+          container.appendChild(article);
+
+          syncRequirementCardState(idx);
+        });
+      }
+
+      function syncPriorityBadge(idx) {
+        const req = appState.requirements[idx];
+        const prioChip = document.getElementById("req-prio-chip-" + idx);
+        if (!prioChip) return;
+
+        if (req.prioridad) {
+          prioChip.style.display = "inline-block";
+          prioChip.textContent = "Prioridad " + req.prioridad;
+          prioChip.className = "priority-chip " + req.prioridad.toLowerCase();
+        } else {
+          prioChip.style.display = "none";
+        }
+      }
+
+      function syncRequirementCardState(idx) {
+        const req = appState.requirements[idx];
+        const cardEl = document.getElementById("req-card-" + idx);
+        const modPreview = document.getElementById("req-mod-preview-" + idx);
+        const statusChip = document.getElementById("req-status-chip-" + idx);
+        const footerHint = document.getElementById("req-footer-hint-" + idx);
+        const saveBtn = document.getElementById("btn-save-req-" + idx);
+        const editBtn = document.getElementById("btn-edit-req-" + idx);
+
+        if (!cardEl) return;
+
+        modPreview.textContent = req.modulo.trim()
+          ? "Módulo: " + req.modulo.trim()
+          : "Módulo sin definir";
+
+        syncPriorityBadge(idx);
+
+        const fieldKeys = [
+          "id",
+          "modulo",
+          "crud",
+          "regla",
+          "prioridad",
+          "responsable",
+          "observaciones"
+        ];
+
+        fieldKeys.forEach((key) => {
+          const el = document.getElementById("req-" + idx + "-" + key);
+          if (el) {
+            el.disabled = req.isSaved;
+          }
+        });
+
+        if (req.isSaved) {
+          cardEl.classList.add("card-saved");
+          statusChip.className = "status-chip saved";
+          statusChip.textContent = req.savedAt
+            ? "✓ Guardado (" + req.savedAt + ")"
+            : "✓ Guardado";
+          footerHint.textContent =
+            "Registro guardado y listo para incluirse en el PDF del instructor.";
+          saveBtn.disabled = true;
+          editBtn.disabled = false;
+        } else {
+          cardEl.classList.remove("card-saved");
+          statusChip.className = "status-chip editing";
+          statusChip.textContent = "✎ En edición (sin guardar)";
+          footerHint.textContent =
+            "Haz clic en «Guardar requerimiento» para confirmar este registro.";
+          saveBtn.disabled = false;
+          editBtn.disabled = true;
+        }
+      }
+
+      function createInputField({ id, label, placeholder, help, value, onInput }) {
+        const group = document.createElement("div");
+        group.className = "field-group";
+
+        const lbl = document.createElement("label");
+        lbl.className = "field-label";
+        lbl.setAttribute("for", id);
+        lbl.textContent = label + " ";
+        const reqSpan = document.createElement("span");
+        reqSpan.className = "required-mark";
+        reqSpan.textContent = "*";
+        lbl.appendChild(reqSpan);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = id;
+        input.className = "field-control";
+        input.placeholder = placeholder;
+        input.value = value;
+        input.addEventListener("input", (e) => onInput(e.target.value));
+
+        const helpEl = document.createElement("span");
+        helpEl.className = "field-help";
+        helpEl.textContent = help;
+
+        group.appendChild(lbl);
+        group.appendChild(input);
+        group.appendChild(helpEl);
+        return group;
+      }
+
+      function createSelectField({ id, label, defaultOption, options, help, value, onChange }) {
+        const group = document.createElement("div");
+        group.className = "field-group";
+
+        const lbl = document.createElement("label");
+        lbl.className = "field-label";
+        lbl.setAttribute("for", id);
+        lbl.textContent = label + " ";
+        const reqSpan = document.createElement("span");
+        reqSpan.className = "required-mark";
+        reqSpan.textContent = "*";
+        lbl.appendChild(reqSpan);
+
+        const select = document.createElement("select");
+        select.id = id;
+        select.className = "field-control";
+
+        const defOpt = document.createElement("option");
+        defOpt.value = "";
+        defOpt.textContent = defaultOption;
+        select.appendChild(defOpt);
+
+        options.forEach((optItem) => {
+          const opt = document.createElement("option");
+          opt.value = optItem.value;
+          opt.textContent = optItem.label;
+          select.appendChild(opt);
+        });
+
+        select.value = value;
+        select.addEventListener("change", (e) => onChange(e.target.value));
+
+        const helpEl = document.createElement("span");
+        helpEl.className = "field-help";
+        helpEl.textContent = help;
+
+        group.appendChild(lbl);
+        group.appendChild(select);
+        group.appendChild(helpEl);
+        return group;
+      }
+
+      function createTextareaField({ id, label, placeholder, help, rows, value, onInput }) {
+        const group = document.createElement("div");
+        group.className = "field-group";
+
+        const lbl = document.createElement("label");
+        lbl.className = "field-label";
+        lbl.setAttribute("for", id);
+        lbl.textContent = label + " ";
+        const reqSpan = document.createElement("span");
+        reqSpan.className = "required-mark";
+        reqSpan.textContent = "*";
+        lbl.appendChild(reqSpan);
+
+        const textarea = document.createElement("textarea");
+        textarea.id = id;
+        textarea.className = "field-control";
+        textarea.placeholder = placeholder;
+        textarea.rows = rows;
+        textarea.value = value;
+        textarea.addEventListener("input", (e) => onInput(e.target.value));
+
+        const helpEl = document.createElement("span");
+        helpEl.className = "field-help";
+        helpEl.textContent = help;
+
+        group.appendChild(lbl);
+        group.appendChild(textarea);
+        group.appendChild(helpEl);
+        return group;
+      }
+
+      function updateProgressAndDeliveryUI() {
+        const savedCount = appState.requirements.filter((r) => r.isSaved).length;
+        const editingCount = TOTAL_REQUIREMENTS - savedCount;
+        const percentage = Math.round((savedCount / TOTAL_REQUIREMENTS) * 100);
+
+        const studentComplete =
+          String(appState.student.name || "").trim().length > 0 &&
+          String(appState.student.ficha || "").trim().length > 0 &&
+          String(appState.student.group || "").trim().length > 0;
+
+        document.getElementById("metric-saved-reqs").textContent =
+          savedCount + " / " + TOTAL_REQUIREMENTS;
+        document.getElementById("metric-editing-reqs").textContent =
+          editingCount + " / " + TOTAL_REQUIREMENTS;
+        document.getElementById("metric-student-badge").textContent = studentComplete
+          ? "Completos"
+          : "Pendiente";
+        document.getElementById("metric-student-status").textContent = studentComplete
+          ? appState.student.name.trim()
+          : "Falta nombre, ficha o grupo";
+        document.getElementById("metric-percentage").textContent = percentage + "%";
+
+        document.getElementById("progress-bar-label").textContent = percentage + "%";
+        document.getElementById("progress-bar-fill").style.width = percentage + "%";
+        document
+          .getElementById("progress-bar-track")
+          .setAttribute("aria-valuenow", String(percentage));
+
+        document.getElementById("topbar-progress-text").textContent =
+          savedCount + "/5 Guardados";
+
+        const summaryBox = document.getElementById("status-summary-box");
+        const summaryTitle = document.getElementById("status-summary-title");
+        const summaryText = document.getElementById("status-summary-text");
+        const pdfBtn = document.getElementById("btn-download-pdf");
+
+        pdfBtn.textContent =
+          "DESCARGAR PDF / IMPRIMIR INFORME (" + savedCount + "/5 GUARDADOS)";
+
+        if (savedCount === 0) {
+          summaryBox.className = "status-summary-box state-pending";
+          summaryTitle.textContent = "Aún no hay requerimientos guardados";
+          summaryText.textContent =
+            "Diligencia los campos de cada tarjeta y presiona «Guardar requerimiento». La descarga del PDF se habilitará únicamente cuando tengas registros guardados.";
+          pdfBtn.disabled = true;
+        } else if (savedCount < TOTAL_REQUIREMENTS) {
+          summaryBox.className = "status-summary-box state-ready";
+          summaryTitle.textContent =
+            "Tienes " +
+            savedCount +
+            " requerimiento(s) guardado(s) y " +
+            editingCount +
+            " en edición";
+          summaryText.textContent =
+            "Si descargas el PDF ahora, se incluirán únicamente los " +
+            savedCount +
+            " requerimiento(s) guardados. Guarda los restantes si deseas entregar los 5 completos.";
+          pdfBtn.disabled = false;
+        } else {
+          summaryBox.className = "status-summary-box state-ready";
+          summaryTitle.textContent =
+            "✓ Los 5 requerimientos están guardados y listos para revisión del instructor";
+          summaryText.textContent =
+            "Puedes descargar el informe PDF. Si necesitas corregir algún dato, usa «Editar requerimiento» en la tarjeta correspondiente y vuelve a guardar.";
+          pdfBtn.disabled = false;
+        }
+      }
+
+      /* =========================================================================
+         5. SINCRONIZACIÓN DE DATOS DEL APRENDIZ Y RESPONSABLES
+      ========================================================================= */
+      function bindStudentFields() {
+        const nameInput = document.getElementById("student-name");
+        const fichaInput = document.getElementById("student-ficha");
+        const groupInput = document.getElementById("student-group");
+        const programInput = document.getElementById("student-program");
+        const dateInput = document.getElementById("student-date");
+
+        nameInput.value = appState.student.name;
+        fichaInput.value = appState.student.ficha;
+        groupInput.value = appState.student.group;
+        programInput.value = appState.student.program;
+        dateInput.value = appState.student.date;
+
+        nameInput.addEventListener("input", (e) => {
+          const newName = e.target.value;
+          appState.student.name = newName;
+
+          appState.requirements.forEach((req, idx) => {
+            if (!req.isSaved && (!req.responsableManual || !req.responsable.trim())) {
+              req.responsable = newName;
+              req.responsableManual = false;
+              const respEl = document.getElementById("req-" + idx + "-responsable");
+              if (respEl) respEl.value = newName;
+            }
+          });
+
+          persistToLocalStorage();
+          updateProgressAndDeliveryUI();
+        });
+
+        fichaInput.addEventListener("input", (e) => {
+          appState.student.ficha = e.target.value;
+          persistToLocalStorage();
+          updateProgressAndDeliveryUI();
+        });
+
+        groupInput.addEventListener("input", (e) => {
+          appState.student.group = e.target.value;
+          persistToLocalStorage();
+          updateProgressAndDeliveryUI();
+        });
+
+        programInput.addEventListener("input", (e) => {
+          appState.student.program = e.target.value;
+          persistToLocalStorage();
+        });
+
+        dateInput.addEventListener("change", (e) => {
+          appState.student.date = e.target.value;
+          persistToLocalStorage();
+        });
+
+        document.getElementById("btn-sync-responsibles").addEventListener("click", () => {
+          const currentName = appState.student.name.trim();
+          if (!currentName) {
+            showToast("Primero escribe tu nombre completo en el campo superior.", true);
+            nameInput.focus();
+            return;
+          }
+          let updatedCount = 0;
+          appState.requirements.forEach((req, idx) => {
+            if (!req.isSaved) {
+              req.responsable = currentName;
+              req.responsableManual = false;
+              const respEl = document.getElementById("req-" + idx + "-responsable");
+              if (respEl) respEl.value = currentName;
+              updatedCount++;
+            }
+          });
+          persistToLocalStorage();
+          if (updatedCount > 0) {
+            showToast("Nombre aplicado en " + updatedCount + " tarjeta(s) en edición.");
+          } else {
+            showToast("Todas las tarjetas están guardadas. Haz clic en Editar si deseas cambiar alguna.");
+          }
+        });
+      }
+
+      /* =========================================================================
+         6. SELECTOR DE CASOS Y CASO ALEATORIO
+      ========================================================================= */
+      function bindCaseControls() {
+        const selector = document.getElementById("case-selector");
+        const randomBtn = document.getElementById("btn-random-case");
+
+        selector.addEventListener("change", (e) => {
+          appState.selectedCaseId = e.target.value;
+          renderSelectedCase();
+          persistToLocalStorage();
+        });
+
+        randomBtn.addEventListener("click", () => {
+          const otherCases = BUSINESS_CASES.filter((c) => c.id !== appState.selectedCaseId);
+          const pool = otherCases.length > 0 ? otherCases : BUSINESS_CASES;
+          const randomIndex = Math.floor(Math.random() * pool.length);
+          const chosen = pool[randomIndex];
+
+          appState.selectedCaseId = chosen.id;
+          renderSelectedCase();
+          persistToLocalStorage();
+          showToast("Caso asignado: " + chosen.code + " · " + chosen.company);
+        });
+      }
+
+      /* =========================================================================
+         7. GENERACIÓN DE INFORME PDF ÚNICAMENTE CON LOS REQUERIMIENTOS GUARDADOS
+      ========================================================================= */
+      function downloadSavedRequirementsPdf() {
+        const savedRequirements = appState.requirements.filter((r) => r.isSaved);
+
+        if (savedRequirements.length === 0) {
+          showToast(
+            "Debes guardar al menos un requerimiento con el botón «Guardar requerimiento» antes de descargar el PDF.",
+            true
+          );
+          return;
+        }
+
+        const studentName = appState.student.name.trim();
+        const studentFicha = appState.student.ficha.trim();
+        const studentGroup = appState.student.group.trim();
+
+        if (!studentName || !studentFicha || !studentGroup) {
+          showToast(
+            "Completa los datos obligatorios del aprendiz (Nombre, Ficha y Grupo) antes de descargar el PDF.",
+            true
+          );
+          document.getElementById("sec-aprendiz").scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+
+        const reportEl = document.getElementById("print-report");
+        reportEl.innerHTML = "";
+
+        const selectedCase =
+          BUSINESS_CASES.find((c) => c.id === appState.selectedCaseId) || BUSINESS_CASES[0];
+
+        // Encabezado del informe
+        const header = document.createElement("div");
+        header.className = "print-header";
+
+        const logoWrap = document.createElement("div");
+        logoWrap.className = "print-logo-wrap";
+        logoWrap.innerHTML =
+          '<svg width="42" height="42" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<circle cx="32" cy="11" r="6.5" fill="#39A900"/>' +
+          '<path d="M12 22.5C18.5 26 25.2 27.5 32 27.5C38.8 27.5 45.5 26 52 22.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
+          '<path d="M32 27.5V41.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
+          '<path d="M32 41.5L19.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
+          '<path d="M32 41.5L44.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
+          "</svg>";
+
+        const titleBlock = document.createElement("div");
+        titleBlock.className = "print-title-block";
+        const h1 = document.createElement("h1");
+        h1.textContent = "TALLER PRÁCTICO: LEVANTAMIENTO DE REQUERIMIENTOS FUNCIONALES";
+        const sub = document.createElement("p");
+        sub.textContent = "Servicio Nacional de Aprendizaje – SENA · Evidencia de Análisis de Sistemas";
+        titleBlock.appendChild(h1);
+        titleBlock.appendChild(sub);
+
+        logoWrap.appendChild(titleBlock);
+        header.appendChild(logoWrap);
+        reportEl.appendChild(header);
+
+        // Tabla de datos generales del aprendiz
+        const metaTable = document.createElement("table");
+        metaTable.className = "print-meta-table";
+        const metaRows = [
+          [
+            "Aprendiz:",
+            studentName,
+            "Fecha de elaboración:",
+            appState.student.date || new Date().toISOString().split("T")[0]
+          ],
+          [
+            "Número de ficha:",
+            studentFicha,
+            "Grupo de proyecto:",
+            studentGroup
+          ],
+          [
+            "Programa de formación:",
+            appState.student.program.trim() || "Formación Técnica / Tecnológica en Desarrollo de Software",
+            "Caso asignado:",
+            selectedCase.code + " · " + selectedCase.company
+          ]
+        ];
+
+        metaRows.forEach((rData) => {
+          const tr = document.createElement("tr");
+          rData.forEach((cellText, cIdx) => {
+            const cell = document.createElement(cIdx % 2 === 0 ? "th" : "td");
+            cell.textContent = cellText;
+            tr.appendChild(cell);
+          });
+          metaTable.appendChild(tr);
+        });
+        reportEl.appendChild(metaTable);
+
+        // Resumen del contexto empresarial
+        const caseBox = document.createElement("div");
+        caseBox.className = "print-case-box";
+        const caseH2 = document.createElement("h2");
+        caseH2.textContent =
+          "Contexto Empresarial: " +
+          selectedCase.code +
+          " – " +
+          selectedCase.company +
+          " (" +
+          selectedCase.sector +
+          ")";
+        const caseDesc = document.createElement("p");
+        caseDesc.textContent = selectedCase.description;
+        const caseNeeds = document.createElement("p");
+        const strongNeed = document.createElement("strong");
+        strongNeed.textContent = "Necesidad principal: ";
+        caseNeeds.appendChild(strongNeed);
+        caseNeeds.appendChild(document.createTextNode(selectedCase.needs));
+
+        caseBox.appendChild(caseH2);
+        caseBox.appendChild(caseDesc);
+        caseBox.appendChild(caseNeeds);
+        reportEl.appendChild(caseBox);
+
+        // Título de la matriz
+        const matrixTitle = document.createElement("div");
+        matrixTitle.className = "print-section-heading";
+        matrixTitle.textContent =
+          "Matriz de Requerimientos Funcionales Guardados (" +
+          savedRequirements.length +
+          " de 5 Registros)";
+        reportEl.appendChild(matrixTitle);
+
+        // Tabla exclusiva con los requerimientos guardados
+        const matrixTable = document.createElement("table");
+        matrixTable.className = "print-matrix-table";
+
+        const thead = document.createElement("thead");
+        const headTr = document.createElement("tr");
+        [
+          "ID",
+          "MÓDULO",
+          "CRUD",
+          "REGLA / REQUERIMIENTO",
+          "PRIORIDAD",
+          "RESPONSABLE",
+          "OBSERVACIONES"
+        ].forEach((colName) => {
+          const th = document.createElement("th");
+          th.textContent = colName;
+          headTr.appendChild(th);
+        });
+        thead.appendChild(headTr);
+        matrixTable.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+        savedRequirements.forEach((req) => {
+          const tr = document.createElement("tr");
+          const crudObj = CRUD_OPTIONS.find((o) => o.value === req.crud);
+          const values = [
+            req.id.trim(),
+            req.modulo.trim(),
+            crudObj ? crudObj.label : req.crud,
+            req.regla.trim(),
+            req.prioridad,
+            req.responsable.trim(),
+            req.observaciones.trim()
+          ];
+          values.forEach((val) => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        matrixTable.appendChild(tbody);
+        reportEl.appendChild(matrixTable);
+
+        // Pie de firma / evaluación
+        const footer = document.createElement("div");
+        footer.className = "print-footer";
+        const leftSign = document.createElement("span");
+        leftSign.textContent = "Elaborado por: " + studentName;
+        const rightSign = document.createElement("span");
+        rightSign.textContent = "Revisión Instructor SENA: ___________________________";
+        footer.appendChild(leftSign);
+        footer.appendChild(rightSign);
+        reportEl.appendChild(footer);
+
+        window.print();
+      }
+
+      /* =========================================================================
+         8. MODAL DE REINICIO Y NOTIFICACIONES TOAST
+      ========================================================================= */
+      function showToast(message, isError = false) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = "toast" + (isError ? " toast-error" : "");
+        toast.textContent = message;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transition = "opacity 0.25s ease";
+          setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 260);
+        }, 3600);
+      }
+
+      function bindActionButtons() {
+        document
+          .getElementById("btn-download-pdf")
+          .addEventListener("click", downloadSavedRequirementsPdf);
+
+        const modal = document.getElementById("reset-modal");
+        const openBtn = document.getElementById("btn-reset-activity");
+        const cancelBtn = document.getElementById("btn-cancel-reset");
+        const confirmBtn = document.getElementById("btn-confirm-reset");
+
+        openBtn.addEventListener("click", () => {
+          modal.classList.add("open");
+          cancelBtn.focus();
+        });
+
+        cancelBtn.addEventListener("click", () => {
+          modal.classList.remove("open");
+          openBtn.focus();
+        });
+
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            modal.classList.remove("open");
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.classList.contains("open")) {
+            modal.classList.remove("open");
+          }
+        });
+
+        confirmBtn.addEventListener("click", () => {
+          localStorage.removeItem(STORAGE_KEY);
+          appState = createDefaultState();
+          bindStudentFields();
+          initCaseSelector();
+          renderSelectedCase();
+          buildRequirementCards();
+          updateProgressAndDeliveryUI();
+          persistToLocalStorage();
+          modal.classList.remove("open");
+          showToast("La actividad ha sido reiniciada correctamente.");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      /* =========================================================================
+         9. INICIALIZACIÓN GENERAL
+      ========================================================================= */
+      document.addEventListener("DOMContentLoaded", () => {
+        bindStudentFields();
+        initCaseSelector();
+        renderSelectedCase();
+        bindCaseControls();
+        buildRequirementCards();
+        bindActionButtons();
+        updateProgressAndDeliveryUI();
+        persistToLocalStorage();
+      });
+    })();
+  </script>
+</body>
+</html>
