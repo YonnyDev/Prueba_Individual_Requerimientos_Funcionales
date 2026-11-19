@@ -98,6 +98,14 @@
       min-width: 0;
     }
 
+    .topbar-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+    }
+
     .topbar-title-group {
       display: flex;
       flex-direction: column;
@@ -223,34 +231,6 @@
       padding-bottom: 1.25rem;
       margin-bottom: 1.25rem;
       border-bottom: 1px solid var(--border-color);
-    }
-
-    .sena-logo-box {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-    }
-
-    .sena-logo-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sena-acronym {
-      font-size: 1.55rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      color: var(--sena-green-dark);
-      line-height: 1;
-    }
-
-    .sena-full-name {
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--brand-navy);
-      text-transform: uppercase;
-      margin-top: 0.25rem;
     }
 
     .moment-badge {
@@ -388,7 +368,7 @@
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
     }
 
-    .field-control:hover:not(:disabled) {
+    .field-control:hover:not(:disabled):not([readonly]) {
       border-color: #9fb1c4;
     }
 
@@ -398,10 +378,15 @@
       box-shadow: 0 0 0 3px rgba(0, 50, 77, 0.14);
     }
 
-    .field-control:disabled {
+    .field-control:disabled,
+    .field-control[readonly] {
       background-color: #f1f5f9;
-      color: #334155;
+      color: #1e293b;
       border-color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .field-control:disabled {
       cursor: not-allowed;
     }
 
@@ -523,7 +508,7 @@
       font-size: 0.82rem;
     }
 
-    /* SECCIÓN 3 y 4: Selector y Contexto Empresarial */
+    /* SECCIÓN 3 y 4: Asignación Aleatoria y Contexto Empresarial */
     .case-selector-bar {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -1209,6 +1194,13 @@
         gap: 10pt;
       }
 
+      .print-logo-img {
+        width: 44pt;
+        height: 44pt;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
       .print-title-block h1 {
         margin: 0;
         font-size: 13.5pt;
@@ -1315,12 +1307,29 @@
   <header class="topbar" role="banner">
     <div class="topbar-inner">
       <div class="topbar-brand">
-        <img width="100" height="100" viewBox="0 0 100 100" fill="none" src="1.png" aria-hidden="true">
-          <circle cx="32" cy="11" r="6.5" fill="#39A900"/>
-          <path d="M12 22.5C18.5 26 25.2 27.5 32 27.5C38.8 27.5 45.5 26 52 22.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M32 27.5V41.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M32 41.5L19.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M32 41.5L44.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>
+        <img
+          class="topbar-logo"
+          src="./1.png"
+          alt="Logo SENA"
+          width="46"
+          height="46"
+          onerror="this.style.display='none'; document.getElementById('topbar-logo-fallback').style.display='block';"
+        />
+        <svg
+          id="topbar-logo-fallback"
+          class="topbar-logo"
+          style="display: none;"
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <circle cx="50" cy="14" r="10" fill="#39A900" />
+          <text x="50" y="42" text-anchor="middle" fill="#39A900" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="21" letter-spacing="1.5">SENA</text>
+          <path d="M10 49H41L25 89H15L28 57H10V49Z" fill="#39A900" />
+          <path d="M90 49H59L75 89H85L72 57H90V49Z" fill="#39A900" />
+          <path d="M50 53L34 89H44L50 74L56 89H66L50 53Z" fill="#39A900" />
+        </svg>
         <div class="topbar-title-group">
           <span class="topbar-inst">SENA · Servicio Nacional de Aprendizaje</span>
           <span class="topbar-name">Taller de Requerimientos Funcionales</span>
@@ -1352,6 +1361,7 @@
 
     <!-- SECCIÓN 1: ENCABEZADO -->
     <section class="card hero-card" id="sec-encabezado" aria-labelledby="main-activity-title">
+      <div class="hero-top">
         <span class="moment-badge">Actividad Académica Individual · Requerimientos Funcionales</span>
       </div>
 
@@ -1365,7 +1375,7 @@
       <div class="rules-banner">
         <h2 class="rules-banner-title">Instrucciones para el desarrollo y entrega</h2>
         <ul class="rules-list">
-          <li>Elabora tus <strong>cinco (5) requerimientos funcionales</strong> a partir del caso empresarial asignado.</li>
+          <li>Elabora tus <strong>cinco (5) requerimientos funcionales</strong> a partir del caso empresarial asignado aleatoriamente.</li>
           <li>Cada requerimiento debe pertenecer a un <strong>módulo diferente</strong> y representar <strong>una única operación CRUD</strong>.</li>
           <li>Usa identificadores con formato <strong>RF_ABREVIATURA_NÚMERO</strong> (ej. RF_USR_01).</li>
           <li>Presiona <strong>Guardar requerimiento</strong> en cada tarjeta para confirmar y bloquear tus datos.</li>
@@ -1462,22 +1472,28 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 3 Y 4: SELECCIÓN Y CONTEXTO EMPRESARIAL -->
+    <!-- SECCIÓN 3 Y 4: ASIGNACIÓN ALEATORIA Y CONTEXTO EMPRESARIAL -->
     <section class="card" id="sec-caso" aria-labelledby="title-casos">
       <div class="section-header">
         <div>
           <span class="section-step">Momento 2 · Estudio de Contexto</span>
           <h2 class="section-title" id="title-casos">CASOS EMPRESARIALES</h2>
-          <p class="section-desc">Selecciona uno de los diez escenarios empresariales o solicita una asignación aleatoria para realizar tu análisis.</p>
+          <p class="section-desc">El escenario empresarial se asigna de forma aleatoria entre 10 empresas disponibles para realizar tu análisis.</p>
         </div>
       </div>
 
       <div class="case-selector-bar">
         <div class="field-group">
-          <label class="field-label" for="case-selector">
-            <span>Selecciona el caso empresarial asignado (10 escenarios disponibles)</span>
+          <label class="field-label" for="case-assigned-display">
+            <span>Caso empresarial asignado aleatoriamente</span>
           </label>
-          <select id="case-selector" class="field-control" aria-label="Selector de caso empresarial"></select>
+          <input
+            type="text"
+            id="case-assigned-display"
+            class="field-control"
+            readonly
+            aria-label="Caso empresarial asignado aleatoriamente"
+          />
         </div>
         <button type="button" class="btn btn-navy" id="btn-random-case">
           Asignar caso aleatorio
@@ -1489,9 +1505,9 @@
         <div class="case-banner">
           <div class="case-banner-meta">
             <span class="case-code-tag" id="case-code-display">CASO 01</span>
-            <span class="case-sector-tag" id="case-sector-display">Comercialización e Inventario</span>
+            <span class="case-sector-tag" id="case-sector-display">Salud Veterinaria y Atención Animal</span>
           </div>
-          <h3 class="case-company-name" id="case-company-display">FERRETERÍA FERROLAMINAS</h3>
+          <h3 class="case-company-name" id="case-company-display">CLÍNICA VETERINARIA HUELLAS DEL VALLE</h3>
         </div>
 
         <div class="case-description-box">
@@ -1697,268 +1713,268 @@
       "use strict";
 
       /* =========================================================================
-         1. BASE DE CONOCIMIENTO: LOS DIEZ CASOS EMPRESARIALES
+         1. BASE DE CONOCIMIENTO: NUEVOS DIEZ CASOS EMPRESARIALES
       ========================================================================= */
       const BUSINESS_CASES = [
         {
           id: "caso_01",
           code: "CASO 01",
-          company: "FERRETERÍA FERROLAMINAS",
-          sector: "Comercialización e Inventario",
+          company: "CLÍNICA VETERINARIA HUELLAS DEL VALLE",
+          sector: "Salud Veterinaria y Atención Animal",
           description:
-            "Empresa comercializadora dedicada a la venta al detal y al por mayor de herramientas manuales y eléctricas, materiales de construcción, elementos eléctricos, pinturas, tuberías y artículos generales de ferretería. En su operación diaria intervienen vendedores de mostrador, un encargado de bodega, un auxiliar de compras y el administrador del punto de venta, quienes atienden tanto a clientes particulares como a maestros de obra y contratistas.",
+            "Centro veterinario que presta servicios de consulta médica general, vacunación, desparasitación, cirugías ambulatorias, hospitalización básica, peluquería canina y venta de medicamentos e insumos para mascotas. En su operación diaria trabajan médicos veterinarios, auxiliares clínicos, peluqueros caninos, recepcionista y administrador.",
           currentProcesses: [
-            "Recepción física de mercancía enviada por proveedores verificando remisiones en papel.",
-            "Registro y consulta de existencias por parte de los vendedores en una hoja de cálculo de Excel compartida en red local.",
-            "Anotación manual en cuadernos y planillas de las entradas y salidas de mercancía por parte del encargado de bodega.",
-            "Gestión de ventas en mostrador con listas de precios impresas o archivos individuales que no siempre están sincronizados.",
-            "Recepción y manejo de devoluciones de clientes sin un registro formal que afecte automáticamente el inventario."
+            "Registro manual de datos de propietarios y mascotas en carpetas físicas ordenadas alfabéticamente.",
+            "Anotación de diagnósticos, fórmulas médicas y evolución clínica en fichas de papel archivadas por mascota.",
+            "Agendamiento de citas médicas y turnos de peluquería en una agenda física de escritorio y mensajes de WhatsApp.",
+            "Control de vacunas aplicadas mediante carnés físicos entregados al propietario sin respaldo centralizado.",
+            "Registro de insumos médicos y venta de medicamentos en una hoja de cálculo de Excel sin cruce automático con las consultas."
           ],
           problems: [
-            "Diferencias frecuentes entre las existencias registradas en Excel y las cantidades físicas reales en bodega.",
-            "Productos registrados múltiples veces con nombres diferentes o códigos inconsistentes.",
-            "Dificultades para identificar oportunamente productos agotados o con stock mínimo.",
-            "Falta de trazabilidad sobre quién realizó cada entrada, salida o ajuste de mercancía.",
-            "Información de proveedores, contactos y condiciones comerciales distribuida en varios archivos sueltos.",
-            "Errores al actualizar los precios de venta cuando cambian los costos de compra.",
-            "Demoras significativas al finalizar la jornada para consolidar las ventas del día."
+            "Dificultad para consultar rápidamente los antecedentes clínicos, alergias y cirugías previas de una mascota.",
+            "Pérdida o deterioro de fichas médicas físicas y carnés de vacunación de pacientes frecuentes.",
+            "Cruces de horarios en el agendamiento de consultas veterinarias y servicios de peluquería.",
+            "Falta de seguimiento oportuno para recordar a los propietarios las fechas de refuerzo de vacunas.",
+            "Desconocimiento de las existencias reales de medicamentos e insumos utilizados durante las consultas.",
+            "Errores al consolidar los cobros cuando una mascota recibe atención médica, medicamentos y baño en una misma visita.",
+            "Falta de trazabilidad sobre qué veterinario atendió cada consulta o procedimiento quirúrgico."
           ],
           needs:
-            "La empresa busca organizar sus procesos comerciales y operativos mediante un sistema que centralice y controle de forma confiable sus productos, movimientos de inventario, proveedores, precios y operaciones de venta."
+            "La clínica requiere centralizar y controlar la gestión de propietarios, mascotas, historias clínicas, esquemas de vacunación, agenda de citas, inventario de medicamentos y facturación de servicios."
         },
         {
           id: "caso_02",
           code: "CASO 02",
-          company: "RESTAURANTE LA CABAÑA PARRILLA CHIMENEA",
-          sector: "Pedidos y Administración Gastronómica",
+          company: "GIMNASIO Y CENTRO DE ACONDICIONAMIENTO TITAN FIT",
+          sector: "Salud, Deporte y Membresías",
           description:
-            "Restaurante de comida tradicional y cortes a la parrilla que atiende comensales en salón y gestiona pedidos para llevar y domicilio. En su flujo diario participan meseros, personal de cocina y parrilla, cajero, encargado de compras e insumos y el administrador general.",
+            "Centro de entrenamiento físico que ofrece planes de musculación, clases grupales dirigidas (spinning, funcional, rumba), valoración física personalizada y venta de suplementos nutricionales. Participan recepcionistas, entrenadores de planta, instructores de clases grupales, fisioterapeuta y administrador.",
           currentProcesses: [
-            "Toma de pedidos en salón mediante comandas de papel escritas a mano por los meseros y entregadas físicamente en la barra de cocina.",
-            "Recepción de reservas de mesas y pedidos para llevar a través de mensajes de WhatsApp y llamadas telefónicas.",
-            "Control de ingredientes e insumos perecederos en una hoja de Excel que se actualiza únicamente al finalizar la jornada.",
-            "Registro manual de compras a proveedores de carnes, verduras y bebidas en carpetas físicas.",
-            "Cierre diario de caja sumando manualmente las comandas pagadas frente al efectivo y transferencias recibidas."
+            "Inscripción de nuevos afiliados en formatos impresos y registro posterior en un archivo general de Excel.",
+            "Control de ingreso diario mediante un cuaderno en recepción donde los usuarios anotan su nombre y hora de llegada.",
+            "Seguimiento de vencimientos de mensualidades y planes trimestrales revisando manualmente fechas en Excel.",
+            "Elaboración de fichas físicas de valoración antropométrica y rutinas de entrenamiento entregadas a cada usuario.",
+            "Inscripción informal a clases grupales con cupo limitado mediante listas pegadas en la cartelera del gimnasio."
           ],
           problems: [
-            "Pedidos que llegan incompletos a cocina o con modificaciones de términos/acompañamientos no registradas claramente.",
-            "Confusión recurrente entre pedidos pertenecientes a diferentes mesas en horas pico.",
-            "Dificultades para conocer en tiempo real la disponibilidad de platos según los ingredientes existentes.",
-            "Desconocimiento de las cantidades reales de ingredientes disponibles durante el servicio.",
-            "Errores de cálculo y omisiones al consolidar las ventas al cierre del día.",
-            "Reservas duplicadas o anotadas en diferentes cuadernos y chats de WhatsApp.",
-            "Falta de organización en el seguimiento y estado de preparación de los pedidos para llevar."
+            "Ingreso de usuarios con membresías vencidas o cuotas pendientes por falta de validación rápida en recepción.",
+            "Dificultad para conocer en tiempo real el aforo del gimnasio y los cupos disponibles en clases grupales.",
+            "Pérdida de historiales de valoración física y evolución de medidas de los afiliados.",
+            "Falta de control sobre las rutinas asignadas por cada entrenador y sus actualizaciones periódicas.",
+            "Registros duplicados de afiliados que renuevan su suscripción después de varios meses de inactividad.",
+            "Desorganización en el inventario y venta de bebidas hidratantes y suplementos en recepción.",
+            "Demoras al generar reportes de ingresos por tipo de plan y asistencia mensual de usuarios."
           ],
           needs:
-            "La empresa necesita mejorar la coordinación operativa entre atención al cliente, cocina, control de inventario de insumos y administración financiera."
+            "El gimnasio busca automatizar y organizar la administración de afiliados, membresías, control de acceso, valoraciones físicas, rutinas de entrenamiento y reserva de clases grupales."
         },
         {
           id: "caso_03",
           code: "CASO 03",
-          company: "TALLERES BAEZ",
-          sector: "Taller de Servicio Automotriz",
+          company: "DROGUERÍA Y FARMACIA SAN RAFAEL",
+          sector: "Comercialización y Dispensación Farmacéutica",
           description:
-            "Taller especializado en el mantenimiento preventivo y correctivo de motocicletas de diversas marcas y cilindrajes. Sus servicios abarcan cambios de aceite, sincronización, revisiones mecánicas generales, mantenimiento de frenos, reparación de motores e instalación de repuestos, operado por mecánicos técnicos, un auxiliar de almacén de repuestos y el administrador.",
+            "Establecimiento farmacéutico dedicado a la dispensación y venta al detal de medicamentos comerciales y genéricos, productos dermatológicos, insumos médicos y artículos de cuidado personal, además de entregas a domicilio en el sector urbano. Participan regente de farmacia, auxiliares de dispensación, domiciliario y administrador.",
           currentProcesses: [
-            "Registro de datos de propietarios y motocicletas en cuadernos de ingreso diario en la recepción.",
-            "Diligenciamiento de una ficha física por motocicleta donde los mecánicos escriben a mano los diagnósticos y trabajos ejecutados.",
-            "Entrega de anotaciones en papel al administrador, quien transcribe los servicios realizados y repuestos usados a una hoja de Excel.",
-            "Agendamiento informal de citas de mantenimiento por teléfono sin control de capacidad del taller.",
-            "Verificación verbal de garantías revisando fichas físicas archivadas por fecha."
+            "Recepción de pedidos de laboratorios y distribuidores verificando facturas físicas y anotando lotes en cuadernos.",
+            "Consulta de precios y existencias en un listado impreso actualizado semanalmente por el administrador.",
+            "Revisión manual en estanterías para detectar medicamentos próximos a vencer.",
+            "Archivo físico de fórmulas médicas para medicamentos que requieren prescripción obligatoria.",
+            "Toma de pedidos a domicilio por teléfono anotando dirección y productos en notas de papel."
           ],
           problems: [
-            "Historiales de mantenimiento incompletos o ilegibles por deterioro de las fichas físicas.",
-            "Alta dificultad para consultar rápidamente las reparaciones anteriores de una motocicleta.",
-            "Pérdida de información de contacto y datos técnicos de algunos clientes.",
-            "Desorganización en la programación de citas y acumulación de motocicletas sin turno claro.",
-            "Falta de control sobre los repuestos entregados y utilizados en cada orden de servicio.",
-            "Dificultades para conocer en tiempo real el estado de los trabajos pendientes o en ejecución.",
-            "Problemas para realizar seguimiento formal a los tiempos y condiciones de garantía de los servicios."
+            "Pérdidas económicas por medicamentos vencidos que no fueron identificados a tiempo en bodega o vitrina.",
+            "Diferencias frecuentes entre el inventario físico y las cantidades registradas en archivos de Excel.",
+            "Dificultad para rastrear el número de lote y laboratorio de un medicamento vendido ante una alerta sanitaria.",
+            "Falta de control riguroso sobre la retención y registro de fórmulas médicas exigidas por normativa.",
+            "Errores en el despacho de pedidos a domicilio por direcciones incompletas o confusión de presentaciones.",
+            "Dificultad para identificar medicamentos con alta rotación que requieren reposición urgente a proveedores.",
+            "Inconsistencias al realizar el arqueo diario de caja frente a ventas en efectivo y transferencias."
           ],
           needs:
-            "La empresa necesita organizar y centralizar la información de clientes, motocicletas, órdenes de servicio, mecánicos asignados, citas y consumo de repuestos."
+            "La droguería necesita un sistema de información que controle con precisión sus medicamentos por lote y fecha de vencimiento, proveedores, ventas, fórmulas médicas y domicilios."
         },
         {
           id: "caso_04",
           code: "CASO 04",
-          company: "INSTITUTO TÉCNICO LOS ANDES",
-          sector: "Gestión de Formación y Matrículas",
+          company: "INMOBILIARIA HOGAR Y PROYECTO",
+          sector: "Gestión de Arriendos y Bienes Raíces",
           description:
-            "Institución privada de educación para el trabajo que ofrece cursos de formación técnica en herramientas ofimáticas, programación de software, diseño gráfico e inglés. Su estructura administrativa integra coordinadores académicos, docentes, personal de admisiones y cartera, y estudiantes inscritos en distintas jornadas.",
+            "Empresa inmobiliaria dedicada a la administración de inmuebles en arriendo (apartamentos, casas, locales comerciales y bodegas), intermediación de ventas, avalúos y gestión de reparaciones locativas. Su equipo está conformado por asesores comerciales, analista de cartera, coordinador de mantenimiento y gerente.",
           currentProcesses: [
-            "Diligenciamiento de formularios físicos en papel cuando un aspirante solicita matrícula en un programa.",
-            "Consolidación manual de la base de datos de estudiantes en archivos de Excel separados por período académico.",
-            "Distribución de horarios de docentes y asignación de aulas mediante documentos compartidos sin validación automática.",
-            "Control de asistencia en planillas impresas que cada docente entrega al finalizar el mes.",
-            "Seguimiento de pagos y cuotas de matrícula revisando recibos físicos y extractos bancarios manualmente."
+            "Registro de inmuebles captados y datos de propietarios en carpetas físicas y hojas de cálculo independientes.",
+            "Seguimiento de contratos de arrendamiento, fechas de renovación e incrementos anuales de canon mediante recordatorios en calendario.",
+            "Control de pagos mensuales de arrendatarios y transferencias a propietarios en archivos de Excel.",
+            "Recepción de reportes de daños o reparaciones locativas por llamadas telefónicas y chats de WhatsApp.",
+            "Agendamiento manual de visitas comerciales de posibles clientes a los inmuebles disponibles."
           ],
           problems: [
-            "Registros duplicados de estudiantes antiguos que se matriculan en nuevos cursos.",
-            "Dificultades para conocer en tiempo real los cupos disponibles por grupo y horario.",
-            "Cruces de horarios entre docentes, grupos y salones asignados.",
-            "Demoras para identificar oportunamente estudiantes con pagos o cuotas pendientes.",
-            "Información académica y notas dispersas en diferentes archivos de Excel.",
-            "Dificultad para consultar el historial completo de matrículas y cursos aprobados por estudiante.",
-            "Falta de control centralizado y oportuno de la asistencia a clase."
+            "Dificultad para consultar rápidamente qué inmuebles están disponibles, arrendados o en mantenimiento.",
+            "Retrasos en la aplicación de incrementos anuales de canon por vencimientos de contrato no detectados a tiempo.",
+            "Demoras en la conciliación de pagos recibidos de arrendatarios frente a los descuentos por comisión y liquidación a propietarios.",
+            "Falta de seguimiento formal a las solicitudes de mantenimiento, técnicos asignados y costos asumidos.",
+            "Duplicidad de citas de asesores comerciales para mostrar un mismo inmueble en el mismo horario.",
+            "Información fragmentada del historial de cada inmueble, sus contratos anteriores y estado de entrega.",
+            "Dificultad para generar estados de cuenta claros y oportunos para propietarios y arrendatarios."
           ],
           needs:
-            "La academia busca organizar e integrar sus procesos académicos y administrativos mediante un sistema de información centralizado."
+            "La inmobiliaria requiere centralizar la administración de propietarios, inmuebles, arrendatarios, contratos de arrendamiento, recaudos, liquidaciones y órdenes de mantenimiento."
         },
         {
           id: "caso_05",
           code: "CASO 05",
-          company: "RÁPIDO EXPRESS",
-          sector: "Empresa de Mensajería y Logística",
+          company: "LAVANDERÍA Y TINTORERÍA BURBUJAS EXPRESS",
+          sector: "Servicios de Lavado y Cuidado Textil",
           description:
-            "Empresa dedicada a la prestación de servicios de mensajería urbana, transporte de paquetes y entregas locales y regionales. Su operación conecta a clientes remitentes, destinatarios, operadores de recepción, un coordinador de despacho y una flota de mensajeros motorizados y en furgón.",
+            "Empresa prestadora de servicios de lavado por peso, lavado en seco, planchado, desmanchado especializado y limpieza de edredones y cortinas, tanto para clientes particulares como para pequeños hoteles y restaurantes. Participan operarios de recepción, clasificadores, operarios de lavado y planchado, domiciliario y administrador.",
           currentProcesses: [
-            "Recepción y registro de solicitudes de envío en formatos físicos talonarios con copia al carbón.",
-            "Impresión de manifiestos de carga en papel entregados a cada mensajero al iniciar su turno.",
-            "Reporte de novedades de entrega, direcciones erradas o paquetes entregados mediante mensajes de WhatsApp al coordinador.",
-            "Asignación manual de rutas según la disponibilidad percibida de los mensajeros en base.",
-            "Búsqueda manual en talonarios cuando un cliente llama a preguntar por el estado de su envío."
+            "Recepción de prendas en mostrador diligenciando talonarios de papel con descripción general y valor estimado.",
+            "Marcación manual de bolsas o prendas con cintas de papel escritas a mano con el número de orden.",
+            "Control de avance del proceso (recibido, lavado, secado, planchado, listo para entrega) mediante tableros acrílicos.",
+            "Registro de insumos químicos (detergentes, suavizantes, desmanchadores) en planillas físicas de bodega.",
+            "Búsqueda manual en talonarios cuando un cliente acude a reclamar sus prendas sin presentar el recibo."
           ],
           problems: [
-            "Dificultad para conocer en tiempo real la ubicación o el estado actualizado de un paquete.",
-            "Registros incompletos o con errores de escritura en datos de remitentes, destinatarios y direcciones.",
-            "Asignaciones duplicadas de una misma entrega a dos mensajeros distintos.",
-            "Falta de control claro sobre qué mensajeros están disponibles, en ruta o fuera de servicio.",
-            "Demoras para identificar paquetes pendientes de despacho o rezagados en bodega.",
-            "Dificultad para registrar, evidenciar y consultar novedades de entrega fallida.",
-            "Información fragmentada sobre envíos, rutas ejecutadas y clientes frecuentes."
+            "Extravió o intercambio de prendas entre órdenes por etiquetas que se despegan o vuelven ilegibles durante el lavado.",
+            "Falta de registro detallado del estado inicial de las prendas (manchas previas, botones faltantes o desgaste).",
+            "Dificultad para informar al cliente en tiempo real si su orden ya está lista para ser retirada o enviada.",
+            "Incumplimiento en fechas y horas prometidas de entrega por falta de control de carga operativa.",
+            "Errores en el cálculo de tarifas cuando se combinan servicios por libra y prendas especiales por unidad.",
+            "Descontrol en el consumo de insumos químicos frente al volumen real de ropa procesada.",
+            "Falta de historial de clientes frecuentes, saldos pendientes por pagar y reclamaciones atendidas."
           ],
           needs:
-            "La empresa necesita mejorar la administración y trazabilidad integral de sus envíos, mensajeros, rutas asignadas y estados de entrega."
+            "La lavandería busca organizar y trazar todo el ciclo de servicio desde la recepción detallada de prendas y asignación de estados operativos hasta la entrega y cobro."
         },
         {
           id: "caso_06",
           code: "CASO 06",
-          company: "HOTEL SOGAMOSO REAL",
-          sector: "Administración Hotelera",
+          company: "BIBLIOTECA Y CENTRO CULTURAL SABERES",
+          sector: "Gestión Bibliográfica y Espacios Culturales",
           description:
-            "Hotel rural turístico que ofrece alojamiento en diferentes tipos de habitaciones, servicios complementarios (alimentación, lavandería, zonas húmedas) y paquetes turísticos regionales. En su operación participan recepcionistas, personal de camarería y limpieza, guías aliados y el administrador.",
+            "Centro cultural y biblioteca comunitaria que ofrece préstamo externo y consulta en sala de material bibliográfico, talleres de lectura, préstamo de equipos de cómputo y reserva de salas para grupos de estudio. Su operación involucra bibliotecólogos, auxiliares de sala, coordinadores culturales y director.",
           currentProcesses: [
-            "Recepción de reservas de alojamiento mediante llamadas telefónicas, mensajes de WhatsApp y correo electrónico.",
-            "Registro manual de fechas de ingreso (check-in) y salida (check-out) en un calendario elaborado en Excel.",
-            "Anotación de datos de huéspedes en libros de registro físico al momento de su llegada.",
-            "Comunicación verbal o por radio del personal de limpieza para avisar cuando una habitación queda lista.",
-            "Anotación en hojas sueltas de consumos y servicios adicionales cargados a cada habitación."
+            "Registro del inventario de libros y revistas en un archivo de Excel sin clasificación normalizada de ejemplares.",
+            "Inscripción de usuarios afiliados mediante fichas de cartulina archivadas en ficheros metálicos.",
+            "Anotación manual en cuadernos de préstamos de la fecha de salida, fecha límite de devolución y firma del lector.",
+            "Revisión manual de cuadernos cada semana para identificar usuarios con libros vencidos.",
+            "Reserva de salas de estudio y talleres culturales anotada en una agenda física en el mostrador principal."
           ],
           problems: [
-            "Reservas duplicadas (overbooking) para una misma habitación en fechas coincidentes.",
-            "Desconocimiento en recepción del estado actualizado de las habitaciones (ocupada, libre, en limpieza, mantenimiento).",
-            "Errores frecuentes al registrar o modificar las fechas de ingreso y salida de los huéspedes.",
-            "Dificultades para consultar el historial y los datos personales de huéspedes frecuentes.",
-            "Falta de seguimiento y cobro oportuno de los servicios adicionales consumidos durante la estadía.",
-            "Desorganización en la asignación y verificación de tareas de limpieza por piso o cabaña.",
-            "Problemas para consolidar con exactitud los ingresos discriminados por alojamiento y servicios."
+            "Desconocimiento en tiempo real de cuántos ejemplares de un título están disponibles o en préstamo.",
+            "Pérdida de libros por falta de seguimiento oportuno a préstamos vencidos y usuarios morosos.",
+            "Dificultad para realizar búsquedas rápidas del catálogo por autor, categoría temática o palabra clave.",
+            "Cruce de reservas de salas de estudio y salones de talleres en horarios simultáneos.",
+            "Registros incompletos o desactualizados de datos de contacto de los usuarios afiliados.",
+            "Falta de control sobre el estado físico de los ejemplares devueltos (daños, páginas faltantes o necesidad de restauración).",
+            "Dificultad para obtener estadísticas de libros más solicitados y asistencia a actividades culturales."
           ],
           needs:
-            "El hotel busca centralizar y controlar en tiempo real la información de reservas, huéspedes, estado de habitaciones, limpieza y servicios complementarios."
+            "La biblioteca necesita sistematizar la gestión de su catálogo bibliográfico, usuarios afiliados, préstamos, devoluciones, sanciones por mora y reserva de espacios culturales."
         },
         {
           id: "caso_07",
           code: "CASO 07",
-          company: "TEXTILES ANDINOS",
-          sector: "Producción y Control de Materiales",
+          company: "PANADERÍA Y PASTELERÍA ARTESANAL TRIGAL DORADO",
+          sector: "Producción de Panadería y Pedidos Especiales",
           description:
-            "Pequeña empresa manufacturera dedicada al diseño, confección y comercialización de uniformes empresariales, dotaciones industriales, camisetas y prendas personalizadas por pedido. Participan asesores comerciales, patronistas, jefe de producción, operarios de corte y confección, control de calidad y encargado de almacén de insumos.",
+            "Panadería y pastelería artesanal con punto de venta al público que elabora panadería tradicional, repostería fina y tortas personalizadas para eventos bajo pedido. En su operación intervienen maestros panaderos, pasteleros decoradores, vendedoras de mostrador, encargado de compras y administrador.",
           currentProcesses: [
-            "Toma de pedidos de clientes empresariales en formatos físicos especificando tallas, colores y bordados.",
-            "Planificación de lotes de producción mediante archivos de Excel independientes por área.",
-            "Control manual en tarjetas kardex de papel de telas, hilos, botones, cierres y demás materias primas.",
-            "Asignación verbal de tareas diarias de corte y confección a los operarios del taller.",
-            "Anotación informal de prendas con defectos o devoluciones internas sin trazabilidad del lote."
+            "Toma de pedidos de tortas personalizadas y refrigerios empresariales en cuadernos en el mostrador.",
+            "Control de materias primas (harinas, lácteos, levaduras, frutas, empaques) en hojas de Excel actualizadas semanalmente.",
+            "Comunicación verbal o mediante notas de papel hacia el taller de pastelería sobre las especificaciones de cada torta.",
+            "Registro manual de la producción diaria horneada frente a las unidades sobrantes o mermas al cierre.",
+            "Control de anticipos y saldos pendientes de pedidos especiales en recibos de caja manuales."
           ],
           problems: [
-            "Dificultad para conocer el porcentaje de avance real de cada pedido en planta.",
-            "Diferencias constantes entre los materiales físicos disponibles y los saldos registrados en tarjetas.",
-            "Falta de trazabilidad de los lotes y productos mientras atraviesan corte, confección y acabado.",
-            "Errores de transcripción en las cantidades y curvas de tallas solicitadas por los clientes.",
-            "Dificultad para identificar oportunamente pedidos retrasados frente a la fecha de entrega pactada.",
-            "Poca claridad sobre las actividades y cargas de trabajo asignadas a cada operario.",
-            "Problemas para registrar, cuantificar y gestionar productos defectuosos o reprocesos."
+            "Errores en sabores, rellenos, dedicatorias o fechas de entrega de tortas personalizadas por notas poco claras.",
+            "Desabastecimiento repentino de insumos críticos durante la producción por falta de control de stock mínimo.",
+            "Falta de trazabilidad sobre las mermas y productos vencidos o dañados en vitrina.",
+            "Dificultad para conocer rápidamente qué pedidos especiales tienen saldo pendiente al momento de la entrega.",
+            "Desconocimiento del costo real de producción por receta frente al precio de venta al público.",
+            "Cruce de entregas en fines de semana cuando se reciben más pedidos de los que el taller puede elaborar.",
+            "Información dispersa sobre proveedores de materias primas, precios históricos y compras realizadas."
           ],
           needs:
-            "La empresa requiere organizar e integrar los procesos de gestión de pedidos, planificación de producción, control de materiales y entregas."
+            "La empresa requiere organizar e integrar el control de materias primas, recetas, órdenes de producción, pedidos personalizados, anticipos y ventas en punto."
         },
         {
           id: "caso_08",
           code: "CASO 08",
-          company: "COOPERATIVA AGROPECUARIA EL CAMPO",
-          sector: "Recepción y Comercialización Agrícola",
+          company: "CONJUNTO RESIDENCIAL ALTOS DE LA PRADERA",
+          sector: "Administración de Propiedad Horizontal",
           description:
-            "Cooperativa rural que agrupa a pequeños y medianos productores agrícolas de la región, recibiendo cosechas de papa, cebolla, zanahoria y hortalizas en su centro de acopio para clasificarlas, conformar lotes y comercializarlas a centrales de abastos y compradores institucionales.",
+            "Copropiedad residencial conformada por múltiples torres de apartamentos, parqueaderos privados y de visitantes, salón social, zona BBQ y cancha múltiple. En su gestión participan el administrador del conjunto, personal de recepción y vigilancia, personal de mantenimiento y residentes.",
           currentProcesses: [
-            "Pesaje y recepción de bultos en el centro de acopio registrando los datos en planillas impresas.",
-            "Clasificación manual por calidad y calibre sin codificación única de lotes recibidos.",
-            "Transcripción posterior de planillas de productores, cantidades recibidas y precios de liquidación a múltiples archivos de Excel.",
-            "Registro manual de despachos a compradores comerciales mediante remisiones físicas.",
-            "Cálculo manual de descuentos por aportes cooperativos y liquidación de pagos a cada productor."
+            "Registro de propietarios, arrendatarios, integrantes del núcleo familiar y mascotas en archivos de Excel.",
+            "Control de ingreso de visitantes y vehículos externos en minutas físicas en la portería principal.",
+            "Solicitud de reserva del salón social y zona BBQ mediante cartas o mensajes de WhatsApp enviados a la administración.",
+            "Recepción de peticiones, quejas, reclamos y solicitudes de mantenimiento (PQRS) por correo electrónico o cuaderno en portería.",
+            "Publicación de comunicados y registro manual de recepción de correspondencia y encomiendas en portería."
           ],
           problems: [
-            "Errores de digitación y lectura al registrar el peso bruto y neto de los productos recibidos.",
-            "Dificultad para identificar con certeza el productor de origen de cada entrega cuando se mezclan cargas.",
-            "Falta de seguimiento y trazabilidad de los lotes recibidos desde el acopio hasta la venta.",
-            "Diferencias entre las cantidades totales recibidas de productores y las cantidades efectivamente comercializadas.",
-            "Demoras significativas en el cálculo y liquidación de pagos a los productores asociados.",
-            "Dificultad para consultar el historial detallado de entregas y liquidaciones de un productor.",
-            "Falta de control sobre los compradores, pedidos pendientes y despachos realizados."
+            "Información desactualizada sobre quién reside actualmente en cada apartamento en caso de emergencia.",
+            "Demoras en portería para validar autorizaciones de ingreso de visitantes y domiciliarios.",
+            "Conflictos entre residentes por reservas duplicadas de zonas comunes o falta de verificación de paz y salvo.",
+            "Falta de seguimiento y respuesta oportuna a las PQRS y reportes de daños en áreas comunes.",
+            "Extravió o demora en la notificación de encomiendas recibidas en portería para los residentes.",
+            "Falta de control sobre el uso y tiempo de permanencia de vehículos en parqueaderos de visitantes.",
+            "Dificultad para consolidar historiales de novedades por torre y apartamento."
           ],
           needs:
-            "La cooperativa necesita organizar y transparentar la información de productores asociados, entregas en acopio, productos, lotes, compradores y liquidación de pagos."
+            "La administración necesita centralizar y agilizar el registro de inmuebles, residentes, control de visitantes, encomiendas, reserva de zonas comunes y gestión de PQRS."
         },
         {
           id: "caso_09",
           code: "CASO 09",
-          company: "TALENTO ORGANIZACIONAL",
-          sector: "Administración de Personal",
+          company: "ÓPTICA Y CONSULTORIO VISUAL CLARAVISIÓN",
+          sector: "Salud Visual y Comercialización Óptica",
           description:
-            "Empresa prestadora de servicios empresariales y outsourcing operativo que cuenta con múltiples áreas funcionales y personal distribuido en varias sedes. El equipo de Talento Humano administra contratos, cargos, departamentos, turnos, novedades de asistencia, permisos y expedientes laborales.",
+            "Centro de salud visual que ofrece consultas de optometría, exámenes diagnósticos, venta de monturas oftálmicas, gafas de sol, lentes de contacto y envío de órdenes de tallado a laboratorios ópticos externos. Participan optómetras, asesores comerciales, auxiliar de laboratorio y administrador.",
           currentProcesses: [
-            "Archivo de hojas de vida, contratos, afiliaciones y soportes laborales en carpetas físicas por empleado.",
-            "Administración de turnos, horarios, vacaciones y novedades de nómina en múltiples hojas de Excel.",
-            "Recepción de solicitudes de permisos e incapacidades por correo electrónico o formatos impresos firmados.",
-            "Consolidación manual de reportes de asistencia enviados por los supervisores de cada sede.",
-            "Actualización manual de cambios de cargo, sede o salario sin historial de auditoría."
+            "Agendamiento de citas de optometría en una agenda física y confirmación manual por llamadas telefónicas.",
+            "Registro de historias clínicas visuales y fórmulas oftálmicas en formatos impresos archivados por paciente.",
+            "Diligenciamiento manual de órdenes de trabajo enviadas por correo o mensajería a los laboratorios externos de lentes.",
+            "Control de inventario de monturas y lentes de contacto en hojas de Excel sin codificación única por referencia.",
+            "Registro de abonos y saldos pendientes de gafas encargadas en talonarios físicos de venta."
           ],
           problems: [
-            "Documentación laboral de los empleados dispersa en carpetas físicas difíciles de consultar rápidamente.",
-            "Registros duplicados o desactualizados de datos personales y contractuales entre sedes.",
-            "Dificultad para consultar de forma estructurada los cargos, departamentos y jerarquías vigentes.",
-            "Errores frecuentes al consolidar novedades de asistencia, retardos y horas extra.",
-            "Demoras en el trámite, aprobación y seguimiento de solicitudes de permisos y vacaciones.",
-            "Falta de trazabilidad histórica sobre los cambios realizados en la información del personal.",
-            "Dificultad para consultar en tiempo real la disponibilidad del personal activo por área y sede."
+            "Errores de transcripción en los parámetros de la fórmula óptica al enviar órdenes al laboratorio.",
+            "Falta de trazabilidad sobre el estado de los trabajos enviados a laboratorio (en proceso, recibido, listo para entrega).",
+            "Dificultad para consultar rápidamente fórmulas anteriores de un paciente durante controles periódicos.",
+            "Diferencias entre las monturas exhibidas en vitrina y las existencias registradas en Excel.",
+            "Incumplimientos en las fechas de entrega prometidas a los clientes por retrasos no alertados del laboratorio.",
+            "Dificultad para verificar abonos realizados y saldos pendientes antes de entregar las gafas.",
+            "Falta de seguimiento a garantías por defectos de fabricación o adaptación de lentes."
           ],
           needs:
-            "La organización necesita mejorar y centralizar la administración de su información laboral, estructura organizacional y procesos internos de gestión humana."
+            "La óptica requiere un sistema integral que gestione pacientes, citas de optometría, fórmulas visuales, inventario de monturas, órdenes a laboratorio y pagos."
         },
         {
           id: "caso_10",
           code: "CASO 10",
-          company: "EVENTOS 1A",
-          sector: "Organización y Alquiler de Equipos",
+          company: "PARQUEADERO Y AUTOLAVADO EL PORTAL 24H",
+          sector: "Control Vehicular y Servicios Automotrices",
           description:
-            "Empresa especializada en la logística y producción de eventos empresariales, sociales y académicos, además del alquiler de equipos audiovisuales y logísticos como sonido profesional, iluminación, pantallas LED, computadores, cámaras, tarimas y mobiliario.",
+            "Establecimiento urbano que opera 24 horas ofreciendo estacionamiento por minutos, horas y mensualidades para automóviles y motocicletas, junto con servicios de lavado general, polichado y limpieza de tapicería. Participan operarios de portería, lavadores, cajero de turno y administrador.",
           currentProcesses: [
-            "Atención de solicitudes de clientes y elaboración manual de cotizaciones en plantillas de Excel.",
-            "Consulta de disponibilidad de equipos técnicos en una hoja de cálculo compartida que actualizan varios empleados.",
-            "Programación de fechas de eventos en un tablero físico y calendarios personales de los coordinadores.",
-            "Documentación de salidas a evento (despachos) y retornos a bodega mediante formatos físicos firmados.",
-            "Registro manual de anticipos y saldos pagados por cada evento contratado."
+            "Entrega de tiquetes de papel con hora escrita o sellada manualmente al ingreso de cada vehículo.",
+            "Cálculo manual del tiempo de permanencia y valor a cobrar cuando el conductor retira su vehículo.",
+            "Registro de clientes con planes de mensualidad en un cuaderno y validación visual por placa al ingresar.",
+            "Anotación en planillas físicas de los vehículos que solicitan servicio de lavado y el operario asignado.",
+            "Cierre de caja por turno sumando tiquetes cobrados en papel frente al dinero recaudado."
           ],
           problems: [
-            "Reservas simultáneas de un mismo equipo técnico para dos eventos en la misma fecha.",
-            "Falta de control preciso sobre qué equipos se encuentran alquilados, en mantenimiento o en bodega.",
-            "Dificultad para consultar rápidamente la disponibilidad real de inventario por rango de fechas.",
-            "Pérdida de información y versiones desactualizadas de cotizaciones enviadas a clientes.",
-            "Falta de registro formal de daños, averías o elementos faltantes al momento de la devolución.",
-            "Desorganización en la programación general de eventos y asignación de personal técnico.",
-            "Dificultad para consultar el historial de eventos, alquileres y comportamiento de pago de los clientes."
+            "Errores en el cálculo manual de tarifas por fracciones de tiempo y pérdida de tiquetes de ingreso.",
+            "Desconocimiento en tiempo real de los cupos disponibles diferenciados por automóviles y motocicletas.",
+            "Ingreso de vehículos con mensualidad vencida por falta de alertas automáticas en portería.",
+            "Confusión en el orden de atención y estado de los vehículos en la zona de lavado.",
+            "Falta de control sobre el rendimiento diario de cada lavador para liquidar comisiones por servicio.",
+            "Dificultad para evidenciar daños o novedades previas del vehículo al momento de recibirlo para lavado.",
+            "Inconsistencias frecuentes en los arqueos de caja al realizar cambios de turno entre cajeros."
           ],
           needs:
-            "La empresa necesita centralizar y controlar la administración de clientes, eventos, cotizaciones, inventario de equipos, reservas, despachos y devoluciones."
+            "La empresa busca sistematizar el control de ingreso y salida de vehículos, tarifas, mensualidades, órdenes de lavado, asignación de operarios y cierre de caja."
         }
       ];
 
@@ -1979,6 +1995,14 @@
         { value: "BAJA", label: "BAJA" }
       ];
 
+      function getRandomCase(excludeId) {
+        const pool = excludeId
+          ? BUSINESS_CASES.filter((c) => c.id !== excludeId)
+          : BUSINESS_CASES;
+        const source = pool.length > 0 ? pool : BUSINESS_CASES;
+        return source[Math.floor(Math.random() * source.length)];
+      }
+
       function createEmptyRequirement(index) {
         return {
           index: index,
@@ -1997,6 +2021,7 @@
 
       function createDefaultState() {
         const today = new Date().toISOString().split("T")[0];
+        const randomCase = getRandomCase();
         return {
           student: {
             name: "",
@@ -2005,7 +2030,7 @@
             program: "",
             date: today
           },
-          selectedCaseId: BUSINESS_CASES[0].id,
+          selectedCaseId: randomCase.id,
           requirements: Array.from({ length: TOTAL_REQUIREMENTS }, (_, idx) =>
             createEmptyRequirement(idx)
           )
@@ -2102,8 +2127,6 @@
         const req = appState.requirements[idx];
         if (!req) return;
 
-        // Solo verifica que los 7 campos tengan contenido para no guardar una tarjeta vacía,
-        // sin validar si la redacción, el ID o la lógica son correctos o incorrectos.
         if (!hasAllSevenFieldsFilled(req)) {
           showToast(
             "Diligencia los 7 campos del Requerimiento 0" + (idx + 1) + " antes de guardarlo.",
@@ -2142,23 +2165,15 @@
       /* =========================================================================
          4. RENDERIZADO DE INTERFAZ Y SINCRONIZACIÓN DOM
       ========================================================================= */
-      function initCaseSelector() {
-        const selector = document.getElementById("case-selector");
-        selector.innerHTML = "";
-        BUSINESS_CASES.forEach((c) => {
-          const opt = document.createElement("option");
-          opt.value = c.id;
-          opt.textContent = c.code + ". " + c.company + " – " + c.sector;
-          selector.appendChild(opt);
-        });
-        selector.value = appState.selectedCaseId;
-      }
-
       function renderSelectedCase() {
         const selected =
           BUSINESS_CASES.find((c) => c.id === appState.selectedCaseId) || BUSINESS_CASES[0];
 
-        document.getElementById("case-selector").value = selected.id;
+        const assignedDisplay = document.getElementById("case-assigned-display");
+        if (assignedDisplay) {
+          assignedDisplay.value = selected.code + ". " + selected.company + " – " + selected.sector;
+        }
+
         document.getElementById("case-code-display").textContent = selected.code;
         document.getElementById("case-sector-display").textContent = selected.sector;
         document.getElementById("case-company-display").textContent = selected.company;
@@ -2714,28 +2729,17 @@
       }
 
       /* =========================================================================
-         6. SELECTOR DE CASOS Y CASO ALEATORIO
+         6. CONTROL EXCLUSIVAMENTE ALEATORIO DE CASOS
       ========================================================================= */
       function bindCaseControls() {
-        const selector = document.getElementById("case-selector");
         const randomBtn = document.getElementById("btn-random-case");
 
-        selector.addEventListener("change", (e) => {
-          appState.selectedCaseId = e.target.value;
-          renderSelectedCase();
-          persistToLocalStorage();
-        });
-
         randomBtn.addEventListener("click", () => {
-          const otherCases = BUSINESS_CASES.filter((c) => c.id !== appState.selectedCaseId);
-          const pool = otherCases.length > 0 ? otherCases : BUSINESS_CASES;
-          const randomIndex = Math.floor(Math.random() * pool.length);
-          const chosen = pool[randomIndex];
-
+          const chosen = getRandomCase(appState.selectedCaseId);
           appState.selectedCaseId = chosen.id;
           renderSelectedCase();
           persistToLocalStorage();
-          showToast("Caso asignado: " + chosen.code + " · " + chosen.company);
+          showToast("Caso asignado aleatoriamente: " + chosen.code + " · " + chosen.company);
         });
       }
 
@@ -2772,20 +2776,34 @@
         const selectedCase =
           BUSINESS_CASES.find((c) => c.id === appState.selectedCaseId) || BUSINESS_CASES[0];
 
-        // Encabezado del informe
+        // Encabezado del informe con logo compatible con GitHub Pages y respaldo SVG
         const header = document.createElement("div");
         header.className = "print-header";
 
         const logoWrap = document.createElement("div");
         logoWrap.className = "print-logo-wrap";
-        logoWrap.innerHTML =
-          '<svg width="42" height="42" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<circle cx="32" cy="11" r="6.5" fill="#39A900"/>' +
-          '<path d="M12 22.5C18.5 26 25.2 27.5 32 27.5C38.8 27.5 45.5 26 52 22.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
-          '<path d="M32 27.5V41.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
-          '<path d="M32 41.5L19.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
-          '<path d="M32 41.5L44.5 55.5" stroke="#39A900" stroke-width="5.5" stroke-linecap="round"/>' +
+
+        const logoImg = document.createElement("img");
+        logoImg.className = "print-logo-img";
+        logoImg.src = "./1.png";
+        logoImg.alt = "Logo SENA";
+        logoImg.onerror = function () {
+          this.style.display = "none";
+          const fb = document.getElementById("print-logo-fallback");
+          if (fb) fb.style.display = "block";
+        };
+        logoWrap.appendChild(logoImg);
+
+        const fallbackWrap = document.createElement("div");
+        fallbackWrap.innerHTML =
+          '<svg id="print-logo-fallback" class="print-logo-img" style="display:none;" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<circle cx="50" cy="14" r="10" fill="#39A900"/>' +
+          '<text x="50" y="42" text-anchor="middle" fill="#39A900" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="21" letter-spacing="1.5">SENA</text>' +
+          '<path d="M10 49H41L25 89H15L28 57H10V49Z" fill="#39A900"/>' +
+          '<path d="M90 49H59L75 89H85L72 57H90V49Z" fill="#39A900"/>' +
+          '<path d="M50 53L34 89H44L50 74L56 89H66L50 53Z" fill="#39A900"/>' +
           "</svg>";
+        logoWrap.appendChild(fallbackWrap.firstChild);
 
         const titleBlock = document.createElement("div");
         titleBlock.className = "print-title-block";
@@ -2983,13 +3001,12 @@
           localStorage.removeItem(STORAGE_KEY);
           appState = createDefaultState();
           bindStudentFields();
-          initCaseSelector();
           renderSelectedCase();
           buildRequirementCards();
           updateProgressAndDeliveryUI();
           persistToLocalStorage();
           modal.classList.remove("open");
-          showToast("La actividad ha sido reiniciada correctamente.");
+          showToast("Actividad reiniciada y nuevo caso asignado aleatoriamente.");
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
       }
@@ -2999,7 +3016,6 @@
       ========================================================================= */
       document.addEventListener("DOMContentLoaded", () => {
         bindStudentFields();
-        initCaseSelector();
         renderSelectedCase();
         bindCaseControls();
         buildRequirementCards();
